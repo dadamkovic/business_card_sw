@@ -1,0 +1,694 @@
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.arch armv6s-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.file	"shape_moves.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/shape_moves.c"
+  18              		.section	.text.rotateCoord,"ax",%progbits
+  19              		.align	1
+  20              		.global	rotateCoord
+  21              		.syntax unified
+  22              		.code	16
+  23              		.thumb_func
+  25              	rotateCoord:
+  26              	.LVL0:
+  27              	.LFB4:
+   1:Core/Src/shape_moves.c **** /**
+   2:Core/Src/shape_moves.c ****  * @file shape_moves.c
+   3:Core/Src/shape_moves.c ****  * @author Daniel Adamkovic (dadamkovic@protonmail.ch)
+   4:Core/Src/shape_moves.c ****  * @brief 
+   5:Core/Src/shape_moves.c ****  * @version 0.1
+   6:Core/Src/shape_moves.c ****  * @date 04-07-2023
+   7:Core/Src/shape_moves.c ****  * 
+   8:Core/Src/shape_moves.c ****  * @copyright Copyright (c) 2023
+   9:Core/Src/shape_moves.c ****  * 
+  10:Core/Src/shape_moves.c ****  */
+  11:Core/Src/shape_moves.c **** 
+  12:Core/Src/shape_moves.c **** #include "shape_moves.h"
+  13:Core/Src/shape_moves.c **** 
+  14:Core/Src/shape_moves.c **** 
+  15:Core/Src/shape_moves.c **** uint8_t rotateShape(char *play_field){
+  16:Core/Src/shape_moves.c ****     int8_t shape_coord[4][2];
+  17:Core/Src/shape_moves.c ****     getShapeCoord(play_field, shape_coord);
+  18:Core/Src/shape_moves.c ****     int8_t adj_x = shape_coord[1][0];
+  19:Core/Src/shape_moves.c ****     int8_t adj_y = shape_coord[1][1];
+  20:Core/Src/shape_moves.c **** 
+  21:Core/Src/shape_moves.c ****     //coordinates to be adjusted in relation to second
+  22:Core/Src/shape_moves.c ****     //found point thta is considered [0,0] coordinate
+  23:Core/Src/shape_moves.c ****     rotateCoord(shape_coord, adj_x, adj_y);
+  24:Core/Src/shape_moves.c ****     if(checkMovePossible(play_field, shape_coord) == MOVE_IMPOS){
+  25:Core/Src/shape_moves.c ****         return MOVE_POS;
+  26:Core/Src/shape_moves.c ****     }
+  27:Core/Src/shape_moves.c ****     eraseShape(play_field);
+  28:Core/Src/shape_moves.c ****     writeShape(play_field, shape_coord);
+  29:Core/Src/shape_moves.c **** 
+  30:Core/Src/shape_moves.c ****     return MOVE_IMPOS;
+  31:Core/Src/shape_moves.c **** }
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 2
+
+
+  32:Core/Src/shape_moves.c **** 
+  33:Core/Src/shape_moves.c **** 
+  34:Core/Src/shape_moves.c **** uint8_t rotateCoord(int8_t (*shape_coord)[2], int8_t adj_x, int8_t adj_y){
+  28              		.loc 1 34 74 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 34 74 is_stmt 0 view .LVU1
+  33 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  34              		.cfi_def_cfa_offset 20
+  35              		.cfi_offset 4, -20
+  36              		.cfi_offset 5, -16
+  37              		.cfi_offset 6, -12
+  38              		.cfi_offset 7, -8
+  39              		.cfi_offset 14, -4
+  40 0002 CE46     		mov	lr, r9
+  41 0004 00B5     		push	{lr}
+  42              		.cfi_def_cfa_offset 24
+  43              		.cfi_offset 9, -24
+  44 0006 82B0     		sub	sp, sp, #8
+  45              		.cfi_def_cfa_offset 32
+  46 0008 0091     		str	r1, [sp]
+  47 000a 0192     		str	r2, [sp, #4]
+  35:Core/Src/shape_moves.c ****     int8_t x,y = 0;
+  48              		.loc 1 35 5 is_stmt 1 view .LVU2
+  49              	.LVL1:
+  36:Core/Src/shape_moves.c ****     for(uint8_t i=0;i<4;i++){
+  50              		.loc 1 36 5 view .LVU3
+  51              	.LBB2:
+  52              		.loc 1 36 9 view .LVU4
+  53              		.loc 1 36 17 is_stmt 0 view .LVU5
+  54 000c 0026     		movs	r6, #0
+  55              		.loc 1 36 5 view .LVU6
+  56 000e 18E0     		b	.L2
+  57              	.LVL2:
+  58              	.L3:
+  37:Core/Src/shape_moves.c ****         shape_coord[i][0] -= adj_x;
+  59              		.loc 1 37 9 is_stmt 1 discriminator 3 view .LVU7
+  60              		.loc 1 37 20 is_stmt 0 discriminator 3 view .LVU8
+  61 0010 7400     		lsls	r4, r6, #1
+  62 0012 0319     		adds	r3, r0, r4
+  63              		.loc 1 37 23 discriminator 3 view .LVU9
+  64 0014 045D     		ldrb	r4, [r0, r4]
+  65              		.loc 1 37 27 discriminator 3 view .LVU10
+  66 0016 6A46     		mov	r2, sp
+  67 0018 1778     		ldrb	r7, [r2]
+  68 001a E41B     		subs	r4, r4, r7
+  69 001c E2B2     		uxtb	r2, r4
+  70 001e 9446     		mov	ip, r2
+  71 0020 65B2     		sxtb	r5, r4
+  72 0022 1D70     		strb	r5, [r3]
+  38:Core/Src/shape_moves.c ****         shape_coord[i][1] -= adj_y;
+  73              		.loc 1 38 9 is_stmt 1 discriminator 3 view .LVU11
+  74              		.loc 1 38 23 is_stmt 0 discriminator 3 view .LVU12
+  75 0024 5C78     		ldrb	r4, [r3, #1]
+  76              		.loc 1 38 27 discriminator 3 view .LVU13
+  77 0026 6A46     		mov	r2, sp
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 3
+
+
+  78 0028 1279     		ldrb	r2, [r2, #4]
+  79 002a A11A     		subs	r1, r4, r2
+  80 002c 5970     		strb	r1, [r3, #1]
+  39:Core/Src/shape_moves.c ****         x = shape_coord[i][0];
+  81              		.loc 1 39 9 is_stmt 1 discriminator 3 view .LVU14
+  82              	.LVL3:
+  40:Core/Src/shape_moves.c ****         y = shape_coord[i][1]; 
+  83              		.loc 1 40 9 discriminator 3 view .LVU15
+  41:Core/Src/shape_moves.c ****         shape_coord[i][0] = -y;
+  84              		.loc 1 41 9 discriminator 3 view .LVU16
+  85              		.loc 1 41 27 is_stmt 0 discriminator 3 view .LVU17
+  86 002e 141B     		subs	r4, r2, r4
+  87              	.LVL4:
+  88              		.loc 1 41 27 discriminator 3 view .LVU18
+  89 0030 E4B2     		uxtb	r4, r4
+  90 0032 1C70     		strb	r4, [r3]
+  42:Core/Src/shape_moves.c ****         shape_coord[i][1] = x;
+  91              		.loc 1 42 9 is_stmt 1 discriminator 3 view .LVU19
+  92              		.loc 1 42 27 is_stmt 0 discriminator 3 view .LVU20
+  93 0034 5D70     		strb	r5, [r3, #1]
+  43:Core/Src/shape_moves.c ****         shape_coord[i][0] += adj_x;
+  94              		.loc 1 43 9 is_stmt 1 discriminator 3 view .LVU21
+  95              		.loc 1 43 27 is_stmt 0 discriminator 3 view .LVU22
+  96 0036 3F19     		adds	r7, r7, r4
+  97 0038 1F70     		strb	r7, [r3]
+  44:Core/Src/shape_moves.c ****         shape_coord[i][1] += adj_y;
+  98              		.loc 1 44 9 is_stmt 1 discriminator 3 view .LVU23
+  99              		.loc 1 44 27 is_stmt 0 discriminator 3 view .LVU24
+ 100 003a 6244     		add	r2, r2, ip
+ 101 003c 5A70     		strb	r2, [r3, #1]
+  36:Core/Src/shape_moves.c ****         shape_coord[i][0] -= adj_x;
+ 102              		.loc 1 36 26 is_stmt 1 discriminator 3 view .LVU25
+ 103 003e 0136     		adds	r6, r6, #1
+ 104              	.LVL5:
+  36:Core/Src/shape_moves.c ****         shape_coord[i][0] -= adj_x;
+ 105              		.loc 1 36 26 is_stmt 0 discriminator 3 view .LVU26
+ 106 0040 F6B2     		uxtb	r6, r6
+ 107              	.LVL6:
+ 108              	.L2:
+  36:Core/Src/shape_moves.c ****         shape_coord[i][0] -= adj_x;
+ 109              		.loc 1 36 22 is_stmt 1 discriminator 1 view .LVU27
+ 110 0042 032E     		cmp	r6, #3
+ 111 0044 E4D9     		bls	.L3
+ 112              	.LBE2:
+  45:Core/Src/shape_moves.c **** 
+  46:Core/Src/shape_moves.c ****     }
+  47:Core/Src/shape_moves.c ****     return 0;
+ 113              		.loc 1 47 5 view .LVU28
+  48:Core/Src/shape_moves.c **** }
+ 114              		.loc 1 48 1 is_stmt 0 view .LVU29
+ 115 0046 0020     		movs	r0, #0
+ 116              	.LVL7:
+ 117              		.loc 1 48 1 view .LVU30
+ 118 0048 02B0     		add	sp, sp, #8
+ 119              		@ sp needed
+ 120              	.LVL8:
+ 121              		.loc 1 48 1 view .LVU31
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 4
+
+
+ 122 004a 80BC     		pop	{r7}
+ 123 004c B946     		mov	r9, r7
+ 124 004e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 125              		.cfi_endproc
+ 126              	.LFE4:
+ 128              		.section	.text.checkMovePossible,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	checkMovePossible
+ 131              		.syntax unified
+ 132              		.code	16
+ 133              		.thumb_func
+ 135              	checkMovePossible:
+ 136              	.LVL9:
+ 137              	.LFB5:
+  49:Core/Src/shape_moves.c **** 
+  50:Core/Src/shape_moves.c **** uint8_t checkMovePossible(char *play_field, int8_t (*shape_coord)[2]){
+ 138              		.loc 1 50 70 is_stmt 1 view -0
+ 139              		.cfi_startproc
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142              		.loc 1 50 70 is_stmt 0 view .LVU33
+ 143 0000 30B5     		push	{r4, r5, lr}
+ 144              		.cfi_def_cfa_offset 12
+ 145              		.cfi_offset 4, -12
+ 146              		.cfi_offset 5, -8
+ 147              		.cfi_offset 14, -4
+  51:Core/Src/shape_moves.c ****     uint8_t x,y = 0;
+ 148              		.loc 1 51 5 is_stmt 1 view .LVU34
+ 149              	.LVL10:
+  52:Core/Src/shape_moves.c ****     char helper;
+ 150              		.loc 1 52 5 view .LVU35
+  53:Core/Src/shape_moves.c ****     for(uint8_t i=0;i<4;i++){
+ 151              		.loc 1 53 5 view .LVU36
+ 152              	.LBB3:
+ 153              		.loc 1 53 9 view .LVU37
+ 154              		.loc 1 53 17 is_stmt 0 view .LVU38
+ 155 0002 0023     		movs	r3, #0
+ 156              		.loc 1 53 5 view .LVU39
+ 157 0004 01E0     		b	.L5
+ 158              	.LVL11:
+ 159              	.L12:
+ 160              		.loc 1 53 26 is_stmt 1 discriminator 2 view .LVU40
+ 161 0006 0133     		adds	r3, r3, #1
+ 162              	.LVL12:
+ 163              		.loc 1 53 26 is_stmt 0 discriminator 2 view .LVU41
+ 164 0008 DBB2     		uxtb	r3, r3
+ 165              	.LVL13:
+ 166              	.L5:
+ 167              		.loc 1 53 22 is_stmt 1 discriminator 1 view .LVU42
+ 168 000a 032B     		cmp	r3, #3
+ 169 000c 0FD8     		bhi	.L11
+  54:Core/Src/shape_moves.c ****         x = shape_coord[i][0];
+ 170              		.loc 1 54 9 view .LVU43
+ 171              		.loc 1 54 24 is_stmt 0 view .LVU44
+ 172 000e 5A00     		lsls	r2, r3, #1
+ 173 0010 8C18     		adds	r4, r1, r2
+ 174              		.loc 1 54 11 view .LVU45
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 5
+
+
+ 175 0012 8D5C     		ldrb	r5, [r1, r2]
+ 176              	.LVL14:
+  55:Core/Src/shape_moves.c ****         y = shape_coord[i][1];
+ 177              		.loc 1 55 9 is_stmt 1 view .LVU46
+ 178              		.loc 1 55 11 is_stmt 0 view .LVU47
+ 179 0014 6478     		ldrb	r4, [r4, #1]
+ 180              	.LVL15:
+  56:Core/Src/shape_moves.c ****         helper = *(play_field + y*MAX_COLUMNS + x);
+ 181              		.loc 1 56 9 is_stmt 1 view .LVU48
+ 182              		.loc 1 56 34 is_stmt 0 view .LVU49
+ 183 0016 A200     		lsls	r2, r4, #2
+ 184 0018 1219     		adds	r2, r2, r4
+ 185              		.loc 1 56 47 view .LVU50
+ 186 001a AA18     		adds	r2, r5, r2
+ 187              		.loc 1 56 16 view .LVU51
+ 188 001c 825C     		ldrb	r2, [r0, r2]
+ 189              	.LVL16:
+  57:Core/Src/shape_moves.c ****         if(helper == DEAD_SYMBOL) return MOVE_IMPOS;
+ 190              		.loc 1 57 9 is_stmt 1 view .LVU52
+ 191              		.loc 1 57 11 is_stmt 0 view .LVU53
+ 192 001e 582A     		cmp	r2, #88
+ 193 0020 07D0     		beq	.L8
+  58:Core/Src/shape_moves.c ****         if(x<0 || y<0) return MOVE_IMPOS;
+ 194              		.loc 1 58 9 is_stmt 1 view .LVU54
+  59:Core/Src/shape_moves.c ****         if(x >= MAX_COLUMNS || y >= MAX_ROWS) return MOVE_IMPOS;
+ 195              		.loc 1 59 9 view .LVU55
+ 196              		.loc 1 59 11 is_stmt 0 view .LVU56
+ 197 0022 042D     		cmp	r5, #4
+ 198 0024 07D8     		bhi	.L9
+ 199              		.loc 1 59 29 discriminator 2 view .LVU57
+ 200 0026 0D2C     		cmp	r4, #13
+ 201 0028 EDD9     		bls	.L12
+ 202              		.loc 1 59 54 view .LVU58
+ 203 002a 0020     		movs	r0, #0
+ 204              	.LVL17:
+ 205              		.loc 1 59 54 view .LVU59
+ 206 002c 00E0     		b	.L6
+ 207              	.LVL18:
+ 208              	.L11:
+ 209              		.loc 1 59 54 view .LVU60
+ 210              	.LBE3:
+  60:Core/Src/shape_moves.c ****     }
+  61:Core/Src/shape_moves.c **** 
+  62:Core/Src/shape_moves.c ****     return MOVE_POS;
+ 211              		.loc 1 62 12 view .LVU61
+ 212 002e 0120     		movs	r0, #1
+ 213              	.LVL19:
+ 214              	.L6:
+  63:Core/Src/shape_moves.c **** }
+ 215              		.loc 1 63 1 view .LVU62
+ 216              		@ sp needed
+ 217 0030 30BD     		pop	{r4, r5, pc}
+ 218              	.LVL20:
+ 219              	.L8:
+ 220              	.LBB4:
+  57:Core/Src/shape_moves.c ****         if(x<0 || y<0) return MOVE_IMPOS;
+ 221              		.loc 1 57 42 view .LVU63
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 6
+
+
+ 222 0032 0020     		movs	r0, #0
+ 223              	.LVL21:
+  57:Core/Src/shape_moves.c ****         if(x<0 || y<0) return MOVE_IMPOS;
+ 224              		.loc 1 57 42 view .LVU64
+ 225 0034 FCE7     		b	.L6
+ 226              	.LVL22:
+ 227              	.L9:
+  59:Core/Src/shape_moves.c ****     }
+ 228              		.loc 1 59 54 view .LVU65
+ 229 0036 0020     		movs	r0, #0
+ 230              	.LVL23:
+  59:Core/Src/shape_moves.c ****     }
+ 231              		.loc 1 59 54 view .LVU66
+ 232 0038 FAE7     		b	.L6
+ 233              	.LBE4:
+ 234              		.cfi_endproc
+ 235              	.LFE5:
+ 237              		.section	.text.rotateShape,"ax",%progbits
+ 238              		.align	1
+ 239              		.global	rotateShape
+ 240              		.syntax unified
+ 241              		.code	16
+ 242              		.thumb_func
+ 244              	rotateShape:
+ 245              	.LVL24:
+ 246              	.LFB3:
+  15:Core/Src/shape_moves.c ****     int8_t shape_coord[4][2];
+ 247              		.loc 1 15 38 is_stmt 1 view -0
+ 248              		.cfi_startproc
+ 249              		@ args = 0, pretend = 0, frame = 8
+ 250              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:Core/Src/shape_moves.c ****     int8_t shape_coord[4][2];
+ 251              		.loc 1 15 38 is_stmt 0 view .LVU68
+ 252 0000 10B5     		push	{r4, lr}
+ 253              		.cfi_def_cfa_offset 8
+ 254              		.cfi_offset 4, -8
+ 255              		.cfi_offset 14, -4
+ 256 0002 82B0     		sub	sp, sp, #8
+ 257              		.cfi_def_cfa_offset 16
+ 258 0004 0400     		movs	r4, r0
+  16:Core/Src/shape_moves.c ****     getShapeCoord(play_field, shape_coord);
+ 259              		.loc 1 16 5 is_stmt 1 view .LVU69
+  17:Core/Src/shape_moves.c ****     int8_t adj_x = shape_coord[1][0];
+ 260              		.loc 1 17 5 view .LVU70
+ 261 0006 6946     		mov	r1, sp
+ 262 0008 FFF7FEFF 		bl	getShapeCoord
+ 263              	.LVL25:
+  18:Core/Src/shape_moves.c ****     int8_t adj_y = shape_coord[1][1];
+ 264              		.loc 1 18 5 view .LVU71
+  18:Core/Src/shape_moves.c ****     int8_t adj_y = shape_coord[1][1];
+ 265              		.loc 1 18 12 is_stmt 0 view .LVU72
+ 266 000c 6B46     		mov	r3, sp
+ 267 000e 0221     		movs	r1, #2
+ 268 0010 5956     		ldrsb	r1, [r3, r1]
+ 269              	.LVL26:
+  19:Core/Src/shape_moves.c **** 
+ 270              		.loc 1 19 5 is_stmt 1 view .LVU73
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 7
+
+
+  19:Core/Src/shape_moves.c **** 
+ 271              		.loc 1 19 12 is_stmt 0 view .LVU74
+ 272 0012 0322     		movs	r2, #3
+ 273 0014 9A56     		ldrsb	r2, [r3, r2]
+ 274              	.LVL27:
+  23:Core/Src/shape_moves.c ****     if(checkMovePossible(play_field, shape_coord) == MOVE_IMPOS){
+ 275              		.loc 1 23 5 is_stmt 1 view .LVU75
+ 276 0016 6846     		mov	r0, sp
+ 277 0018 FFF7FEFF 		bl	rotateCoord
+ 278              	.LVL28:
+  24:Core/Src/shape_moves.c ****         return MOVE_POS;
+ 279              		.loc 1 24 5 view .LVU76
+  24:Core/Src/shape_moves.c ****         return MOVE_POS;
+ 280              		.loc 1 24 8 is_stmt 0 view .LVU77
+ 281 001c 6946     		mov	r1, sp
+ 282 001e 2000     		movs	r0, r4
+ 283 0020 FFF7FEFF 		bl	checkMovePossible
+ 284              	.LVL29:
+  24:Core/Src/shape_moves.c ****         return MOVE_POS;
+ 285              		.loc 1 24 7 view .LVU78
+ 286 0024 0028     		cmp	r0, #0
+ 287 0026 02D1     		bne	.L16
+  25:Core/Src/shape_moves.c ****     }
+ 288              		.loc 1 25 16 view .LVU79
+ 289 0028 0120     		movs	r0, #1
+ 290              	.L14:
+  31:Core/Src/shape_moves.c **** 
+ 291              		.loc 1 31 1 view .LVU80
+ 292 002a 02B0     		add	sp, sp, #8
+ 293              		@ sp needed
+ 294              	.LVL30:
+  31:Core/Src/shape_moves.c **** 
+ 295              		.loc 1 31 1 view .LVU81
+ 296 002c 10BD     		pop	{r4, pc}
+ 297              	.LVL31:
+ 298              	.L16:
+  27:Core/Src/shape_moves.c ****     writeShape(play_field, shape_coord);
+ 299              		.loc 1 27 5 is_stmt 1 view .LVU82
+ 300 002e 2000     		movs	r0, r4
+ 301 0030 FFF7FEFF 		bl	eraseShape
+ 302              	.LVL32:
+  28:Core/Src/shape_moves.c **** 
+ 303              		.loc 1 28 5 view .LVU83
+ 304 0034 6946     		mov	r1, sp
+ 305 0036 2000     		movs	r0, r4
+ 306 0038 FFF7FEFF 		bl	writeShape
+ 307              	.LVL33:
+  30:Core/Src/shape_moves.c **** }
+ 308              		.loc 1 30 5 view .LVU84
+  30:Core/Src/shape_moves.c **** }
+ 309              		.loc 1 30 12 is_stmt 0 view .LVU85
+ 310 003c 0020     		movs	r0, #0
+ 311 003e F4E7     		b	.L14
+ 312              		.cfi_endproc
+ 313              	.LFE3:
+ 315              		.section	.text.moveShape,"ax",%progbits
+ 316              		.align	1
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 8
+
+
+ 317              		.global	moveShape
+ 318              		.syntax unified
+ 319              		.code	16
+ 320              		.thumb_func
+ 322              	moveShape:
+ 323              	.LVL34:
+ 324              	.LFB6:
+  64:Core/Src/shape_moves.c **** 
+  65:Core/Src/shape_moves.c **** uint8_t moveShape(char *play_field, enum_Move_Type move){
+ 325              		.loc 1 65 57 is_stmt 1 view -0
+ 326              		.cfi_startproc
+ 327              		@ args = 0, pretend = 0, frame = 8
+ 328              		@ frame_needed = 0, uses_anonymous_args = 0
+ 329              		.loc 1 65 57 is_stmt 0 view .LVU87
+ 330 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 331              		.cfi_def_cfa_offset 20
+ 332              		.cfi_offset 4, -20
+ 333              		.cfi_offset 5, -16
+ 334              		.cfi_offset 6, -12
+ 335              		.cfi_offset 7, -8
+ 336              		.cfi_offset 14, -4
+ 337 0002 83B0     		sub	sp, sp, #12
+ 338              		.cfi_def_cfa_offset 32
+ 339 0004 0600     		movs	r6, r0
+ 340 0006 0D00     		movs	r5, r1
+ 341 0008 0027     		movs	r7, #0
+  66:Core/Src/shape_moves.c ****     int8_t shape_coord[4][2];
+ 342              		.loc 1 66 5 is_stmt 1 view .LVU88
+  67:Core/Src/shape_moves.c ****     getShapeCoord(play_field, shape_coord);
+ 343              		.loc 1 67 5 view .LVU89
+ 344 000a 6946     		mov	r1, sp
+ 345              	.LVL35:
+ 346              		.loc 1 67 5 is_stmt 0 view .LVU90
+ 347 000c FFF7FEFF 		bl	getShapeCoord
+ 348              	.LVL36:
+  68:Core/Src/shape_moves.c ****     int8_t x,y=0;
+ 349              		.loc 1 68 5 is_stmt 1 view .LVU91
+  69:Core/Src/shape_moves.c ****     switch(move){
+ 350              		.loc 1 69 5 view .LVU92
+ 351 0010 012D     		cmp	r5, #1
+ 352 0012 06D0     		beq	.L18
+ 353 0014 022D     		cmp	r5, #2
+ 354 0016 08D0     		beq	.L19
+ 355 0018 002D     		cmp	r5, #0
+ 356 001a 09D0     		beq	.L25
+ 357 001c 0020     		movs	r0, #0
+ 358              	.LVL37:
+ 359              	.L21:
+  70:Core/Src/shape_moves.c ****         case MOVE_DOWN:
+  71:Core/Src/shape_moves.c ****             y += 1;
+  72:Core/Src/shape_moves.c ****             break;
+  73:Core/Src/shape_moves.c ****         case MOVE_LEFT:
+  74:Core/Src/shape_moves.c ****             x -= 1;
+  75:Core/Src/shape_moves.c ****             break;
+  76:Core/Src/shape_moves.c ****         case MOVE_RIGHT:
+  77:Core/Src/shape_moves.c ****             x += 1;
+  78:Core/Src/shape_moves.c ****             break;
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 9
+
+
+  79:Core/Src/shape_moves.c ****         default:
+  80:Core/Src/shape_moves.c ****             //todo: add error message
+  81:Core/Src/shape_moves.c ****             return MOVE_IMPOS;
+  82:Core/Src/shape_moves.c ****     }
+  83:Core/Src/shape_moves.c **** 
+  84:Core/Src/shape_moves.c ****     for(uint8_t i=0; i<4; i++){
+  85:Core/Src/shape_moves.c ****         shape_coord[i][0] += x;
+  86:Core/Src/shape_moves.c ****         shape_coord[i][1] += y;
+  87:Core/Src/shape_moves.c ****     }
+  88:Core/Src/shape_moves.c **** 
+  89:Core/Src/shape_moves.c ****     if(checkMovePossible(play_field, shape_coord) == MOVE_IMPOS){
+  90:Core/Src/shape_moves.c ****         if(move == MOVE_DOWN){
+  91:Core/Src/shape_moves.c ****             killShape(play_field);
+  92:Core/Src/shape_moves.c ****             checkFullRow(play_field);
+  93:Core/Src/shape_moves.c ****             return MOVE_IMPOS;
+  94:Core/Src/shape_moves.c ****         }
+  95:Core/Src/shape_moves.c ****         return MOVE_IMPOS;
+  96:Core/Src/shape_moves.c ****     }
+  97:Core/Src/shape_moves.c ****     
+  98:Core/Src/shape_moves.c ****     eraseShape(play_field);
+  99:Core/Src/shape_moves.c ****     writeShape(play_field, shape_coord);
+ 100:Core/Src/shape_moves.c **** 
+ 101:Core/Src/shape_moves.c ****     return MOVE_POS;
+ 102:Core/Src/shape_moves.c **** }...
+ 360              		.loc 1 102 1 is_stmt 0 view .LVU93
+ 361 001e 03B0     		add	sp, sp, #12
+ 362              		@ sp needed
+ 363              	.LVL38:
+ 364              		.loc 1 102 1 view .LVU94
+ 365 0020 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 366              	.LVL39:
+ 367              	.L18:
+  74:Core/Src/shape_moves.c ****             x -= 1;
+ 368              		.loc 1 74 13 is_stmt 1 view .LVU95
+  74:Core/Src/shape_moves.c ****             x -= 1;
+ 369              		.loc 1 74 15 is_stmt 0 view .LVU96
+ 370 0022 0127     		movs	r7, #1
+ 371 0024 7F42     		rsbs	r7, r7, #0
+ 372              	.LVL40:
+  75:Core/Src/shape_moves.c ****             break;
+ 373              		.loc 1 75 13 is_stmt 1 view .LVU97
+  68:Core/Src/shape_moves.c ****     int8_t x,y=0;
+ 374              		.loc 1 68 14 is_stmt 0 view .LVU98
+ 375 0026 0020     		movs	r0, #0
+  75:Core/Src/shape_moves.c ****             break;
+ 376              		.loc 1 75 13 view .LVU99
+ 377 0028 03E0     		b	.L20
+ 378              	.LVL41:
+ 379              	.L19:
+  77:Core/Src/shape_moves.c ****             x += 1;
+ 380              		.loc 1 77 13 is_stmt 1 view .LVU100
+  77:Core/Src/shape_moves.c ****             x += 1;
+ 381              		.loc 1 77 15 is_stmt 0 view .LVU101
+ 382 002a 0127     		movs	r7, #1
+ 383              	.LVL42:
+  78:Core/Src/shape_moves.c ****             break;
+ 384              		.loc 1 78 13 is_stmt 1 view .LVU102
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 10
+
+
+  68:Core/Src/shape_moves.c ****     int8_t x,y=0;
+ 385              		.loc 1 68 14 is_stmt 0 view .LVU103
+ 386 002c 0020     		movs	r0, #0
+  78:Core/Src/shape_moves.c ****             break;
+ 387              		.loc 1 78 13 view .LVU104
+ 388 002e 00E0     		b	.L20
+ 389              	.LVL43:
+ 390              	.L25:
+  69:Core/Src/shape_moves.c ****     switch(move){
+ 391              		.loc 1 69 5 view .LVU105
+ 392 0030 0120     		movs	r0, #1
+ 393              	.L20:
+ 394              	.LVL44:
+  84:Core/Src/shape_moves.c ****     for(uint8_t i=0; i<4; i++){
+ 395              		.loc 1 84 5 is_stmt 1 view .LVU106
+ 396              	.LBB5:
+  84:Core/Src/shape_moves.c ****     for(uint8_t i=0; i<4; i++){
+ 397              		.loc 1 84 9 view .LVU107
+  84:Core/Src/shape_moves.c ****     for(uint8_t i=0; i<4; i++){
+ 398              		.loc 1 84 17 is_stmt 0 view .LVU108
+ 399 0032 0022     		movs	r2, #0
+  84:Core/Src/shape_moves.c ****     for(uint8_t i=0; i<4; i++){
+ 400              		.loc 1 84 5 view .LVU109
+ 401 0034 0BE0     		b	.L22
+ 402              	.LVL45:
+ 403              	.L23:
+  85:Core/Src/shape_moves.c ****         shape_coord[i][0] += x;
+ 404              		.loc 1 85 9 is_stmt 1 discriminator 3 view .LVU110
+  85:Core/Src/shape_moves.c ****         shape_coord[i][0] += x;
+ 405              		.loc 1 85 23 is_stmt 0 discriminator 3 view .LVU111
+ 406 0036 5300     		lsls	r3, r2, #1
+ 407 0038 6946     		mov	r1, sp
+ 408 003a 595C     		ldrb	r1, [r3, r1]
+  85:Core/Src/shape_moves.c ****         shape_coord[i][0] += x;
+ 409              		.loc 1 85 27 discriminator 3 view .LVU112
+ 410 003c C919     		adds	r1, r1, r7
+ 411 003e 6C46     		mov	r4, sp
+ 412 0040 1955     		strb	r1, [r3, r4]
+  86:Core/Src/shape_moves.c ****         shape_coord[i][1] += y;
+ 413              		.loc 1 86 9 is_stmt 1 discriminator 3 view .LVU113
+  86:Core/Src/shape_moves.c ****         shape_coord[i][1] += y;
+ 414              		.loc 1 86 23 is_stmt 0 discriminator 3 view .LVU114
+ 415 0042 6B44     		add	r3, r3, sp
+ 416 0044 5C78     		ldrb	r4, [r3, #1]
+  86:Core/Src/shape_moves.c ****         shape_coord[i][1] += y;
+ 417              		.loc 1 86 27 discriminator 3 view .LVU115
+ 418 0046 2418     		adds	r4, r4, r0
+ 419 0048 5C70     		strb	r4, [r3, #1]
+  84:Core/Src/shape_moves.c ****     for(uint8_t i=0; i<4; i++){
+ 420              		.loc 1 84 28 is_stmt 1 discriminator 3 view .LVU116
+ 421 004a 0132     		adds	r2, r2, #1
+ 422              	.LVL46:
+  84:Core/Src/shape_moves.c ****     for(uint8_t i=0; i<4; i++){
+ 423              		.loc 1 84 28 is_stmt 0 discriminator 3 view .LVU117
+ 424 004c D2B2     		uxtb	r2, r2
+ 425              	.LVL47:
+ 426              	.L22:
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 11
+
+
+  84:Core/Src/shape_moves.c ****     for(uint8_t i=0; i<4; i++){
+ 427              		.loc 1 84 23 is_stmt 1 discriminator 1 view .LVU118
+ 428 004e 032A     		cmp	r2, #3
+ 429 0050 F1D9     		bls	.L23
+ 430              	.LBE5:
+  89:Core/Src/shape_moves.c ****     if(checkMovePossible(play_field, shape_coord) == MOVE_IMPOS){
+ 431              		.loc 1 89 5 view .LVU119
+  89:Core/Src/shape_moves.c ****     if(checkMovePossible(play_field, shape_coord) == MOVE_IMPOS){
+ 432              		.loc 1 89 8 is_stmt 0 view .LVU120
+ 433 0052 6946     		mov	r1, sp
+ 434 0054 3000     		movs	r0, r6
+ 435              	.LVL48:
+  89:Core/Src/shape_moves.c ****     if(checkMovePossible(play_field, shape_coord) == MOVE_IMPOS){
+ 436              		.loc 1 89 8 view .LVU121
+ 437 0056 FFF7FEFF 		bl	checkMovePossible
+ 438              	.LVL49:
+  89:Core/Src/shape_moves.c ****     if(checkMovePossible(play_field, shape_coord) == MOVE_IMPOS){
+ 439              		.loc 1 89 7 view .LVU122
+ 440 005a 0028     		cmp	r0, #0
+ 441 005c 09D1     		bne	.L24
+  90:Core/Src/shape_moves.c ****         if(move == MOVE_DOWN){
+ 442              		.loc 1 90 9 is_stmt 1 view .LVU123
+  90:Core/Src/shape_moves.c ****         if(move == MOVE_DOWN){
+ 443              		.loc 1 90 11 is_stmt 0 view .LVU124
+ 444 005e 002D     		cmp	r5, #0
+ 445 0060 DDD1     		bne	.L21
+  91:Core/Src/shape_moves.c ****             killShape(play_field);
+ 446              		.loc 1 91 13 is_stmt 1 view .LVU125
+ 447 0062 3000     		movs	r0, r6
+ 448 0064 FFF7FEFF 		bl	killShape
+ 449              	.LVL50:
+  92:Core/Src/shape_moves.c ****             checkFullRow(play_field);
+ 450              		.loc 1 92 13 view .LVU126
+ 451 0068 3000     		movs	r0, r6
+ 452 006a FFF7FEFF 		bl	checkFullRow
+ 453              	.LVL51:
+  93:Core/Src/shape_moves.c ****             return MOVE_IMPOS;
+ 454              		.loc 1 93 13 view .LVU127
+  93:Core/Src/shape_moves.c ****             return MOVE_IMPOS;
+ 455              		.loc 1 93 20 is_stmt 0 view .LVU128
+ 456 006e 2800     		movs	r0, r5
+ 457 0070 D5E7     		b	.L21
+ 458              	.L24:
+  98:Core/Src/shape_moves.c ****     eraseShape(play_field);
+ 459              		.loc 1 98 5 is_stmt 1 view .LVU129
+ 460 0072 3000     		movs	r0, r6
+ 461 0074 FFF7FEFF 		bl	eraseShape
+ 462              	.LVL52:
+  99:Core/Src/shape_moves.c ****     writeShape(play_field, shape_coord);
+ 463              		.loc 1 99 5 view .LVU130
+ 464 0078 6946     		mov	r1, sp
+ 465 007a 3000     		movs	r0, r6
+ 466 007c FFF7FEFF 		bl	writeShape
+ 467              	.LVL53:
+ 101:Core/Src/shape_moves.c ****     return MOVE_POS;
+ 468              		.loc 1 101 5 view .LVU131
+ 101:Core/Src/shape_moves.c ****     return MOVE_POS;
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 12
+
+
+ 469              		.loc 1 101 12 is_stmt 0 view .LVU132
+ 470 0080 0120     		movs	r0, #1
+ 471 0082 CCE7     		b	.L21
+ 472              		.cfi_endproc
+ 473              	.LFE6:
+ 475              		.text
+ 476              	.Letext0:
+ 477              		.file 2 "c:\\users\\daniel\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xp
+ 478              		.file 3 "c:\\users\\daniel\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xp
+ 479              		.file 4 "Core/Inc/defines.h"
+ 480              		.file 5 "Core/Inc/game_control.h"
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 shape_moves.c
+C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s:19     .text.rotateCoord:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s:25     .text.rotateCoord:00000000 rotateCoord
+C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s:129    .text.checkMovePossible:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s:135    .text.checkMovePossible:00000000 checkMovePossible
+C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s:238    .text.rotateShape:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s:244    .text.rotateShape:00000000 rotateShape
+C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s:316    .text.moveShape:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\cc2BXjXx.s:322    .text.moveShape:00000000 moveShape
+
+UNDEFINED SYMBOLS
+getShapeCoord
+eraseShape
+writeShape
+killShape
+checkFullRow

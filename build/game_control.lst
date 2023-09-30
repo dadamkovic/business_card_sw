@@ -1,0 +1,1889 @@
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.arch armv6s-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.file	"game_control.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/game_control.c"
+  18              		.section	.text.checkFinished,"ax",%progbits
+  19              		.align	1
+  20              		.global	checkFinished
+  21              		.syntax unified
+  22              		.code	16
+  23              		.thumb_func
+  25              	checkFinished:
+  26              	.LVL0:
+  27              	.LFB3:
+   1:Core/Src/game_control.c **** /**
+   2:Core/Src/game_control.c ****  * @file game_control.c
+   3:Core/Src/game_control.c ****  * @author Daniel Adamkovic (dadamkovic@protonmail.ch)
+   4:Core/Src/game_control.c ****  * @brief 
+   5:Core/Src/game_control.c ****  * @version 0.1
+   6:Core/Src/game_control.c ****  * @date 04-07-2023
+   7:Core/Src/game_control.c ****  * 
+   8:Core/Src/game_control.c ****  * @copyright Copyright (c) 2023
+   9:Core/Src/game_control.c ****  * 
+  10:Core/Src/game_control.c ****  */
+  11:Core/Src/game_control.c **** 
+  12:Core/Src/game_control.c **** #include "game_control.h"
+  13:Core/Src/game_control.c **** #include "shape_moves.h"
+  14:Core/Src/game_control.c **** 
+  15:Core/Src/game_control.c **** const char I_BLOCK_DATA[4] = {'#','#','#','#'};
+  16:Core/Src/game_control.c **** const char O_BLOCK_DATA[8] = {'#','#','#','#',' ',' ',' ',' '};
+  17:Core/Src/game_control.c **** const char T_BLOCK_DATA[8] = {'#',' ','#','#','#',' ',' ',' '};
+  18:Core/Src/game_control.c **** const char L_BLOCK_DATA[8] = {'#','#','#',' ','#',' ',' ',' '};
+  19:Core/Src/game_control.c **** const char J_BLOCK_DATA[8] = {'#','#',' ','#',' ','#',' ',' '};
+  20:Core/Src/game_control.c **** const char Z_BLOCK_DATA[8] = {'#',' ','#','#',' ','#',' ',' '};
+  21:Core/Src/game_control.c **** const char S_BLOCK_DATA[8] = {' ','#','#','#','#',' ',' ',' '};
+  22:Core/Src/game_control.c **** 
+  23:Core/Src/game_control.c **** uint8_t checkFinished(char *play_field){   
+  28              		.loc 1 23 40 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  24:Core/Src/game_control.c ****     for(int16_t i=0; i<STAGE_SIZE; i++){
+  33              		.loc 1 24 5 view .LVU1
+  34              	.LBB2:
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 2
+
+
+  35              		.loc 1 24 9 view .LVU2
+  36              		.loc 1 24 17 is_stmt 0 view .LVU3
+  37 0000 0021     		movs	r1, #0
+  38              		.loc 1 24 5 view .LVU4
+  39 0002 01E0     		b	.L2
+  40              	.LVL1:
+  41              	.L9:
+  42              		.loc 1 24 37 is_stmt 1 discriminator 2 view .LVU5
+  43 0004 0131     		adds	r1, r1, #1
+  44              	.LVL2:
+  45              		.loc 1 24 37 is_stmt 0 discriminator 2 view .LVU6
+  46 0006 09B2     		sxth	r1, r1
+  47              	.LVL3:
+  48              	.L2:
+  49              		.loc 1 24 23 is_stmt 1 discriminator 1 view .LVU7
+  50 0008 0329     		cmp	r1, #3
+  51 000a 0BDC     		bgt	.L8
+  52              	.LBB3:
+  25:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+  53              		.loc 1 25 21 is_stmt 0 view .LVU8
+  54 000c 0023     		movs	r3, #0
+  55              	.L5:
+  56              	.LVL4:
+  57              		.loc 1 25 27 is_stmt 1 discriminator 1 view .LVU9
+  58 000e 042B     		cmp	r3, #4
+  59 0010 F8DC     		bgt	.L9
+  26:Core/Src/game_control.c ****             if(*(play_field+i*MAX_COLUMNS+j) == DEAD_SYMBOL){
+  60              		.loc 1 26 13 view .LVU10
+  61              		.loc 1 26 30 is_stmt 0 view .LVU11
+  62 0012 8A00     		lsls	r2, r1, #2
+  63 0014 5218     		adds	r2, r2, r1
+  64              		.loc 1 26 42 view .LVU12
+  65 0016 9A18     		adds	r2, r3, r2
+  66              		.loc 1 26 16 view .LVU13
+  67 0018 825C     		ldrb	r2, [r0, r2]
+  68              		.loc 1 26 15 view .LVU14
+  69 001a 582A     		cmp	r2, #88
+  70 001c 04D0     		beq	.L6
+  25:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+  71              		.loc 1 25 42 is_stmt 1 discriminator 2 view .LVU15
+  72 001e 0133     		adds	r3, r3, #1
+  73              	.LVL5:
+  25:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+  74              		.loc 1 25 42 is_stmt 0 discriminator 2 view .LVU16
+  75 0020 1BB2     		sxth	r3, r3
+  76              	.LVL6:
+  25:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+  77              		.loc 1 25 42 discriminator 2 view .LVU17
+  78 0022 F4E7     		b	.L5
+  79              	.LVL7:
+  80              	.L8:
+  25:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+  81              		.loc 1 25 42 discriminator 2 view .LVU18
+  82              	.LBE3:
+  83              	.LBE2:
+  27:Core/Src/game_control.c ****                 return GAME_FINISHED;
+  28:Core/Src/game_control.c ****             }
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 3
+
+
+  29:Core/Src/game_control.c ****         }
+  30:Core/Src/game_control.c ****     }
+  31:Core/Src/game_control.c ****     return GAME_RUNNING;
+  84              		.loc 1 31 12 view .LVU19
+  85 0024 0020     		movs	r0, #0
+  86              	.LVL8:
+  87              	.L3:
+  32:Core/Src/game_control.c **** }
+  88              		.loc 1 32 1 view .LVU20
+  89              		@ sp needed
+  90 0026 7047     		bx	lr
+  91              	.LVL9:
+  92              	.L6:
+  93              	.LBB5:
+  94              	.LBB4:
+  27:Core/Src/game_control.c ****                 return GAME_FINISHED;
+  95              		.loc 1 27 24 view .LVU21
+  96 0028 0120     		movs	r0, #1
+  97              	.LVL10:
+  27:Core/Src/game_control.c ****                 return GAME_FINISHED;
+  98              		.loc 1 27 24 view .LVU22
+  99 002a FCE7     		b	.L3
+ 100              	.LBE4:
+ 101              	.LBE5:
+ 102              		.cfi_endproc
+ 103              	.LFE3:
+ 105              		.section	.text.checkMoveDown,"ax",%progbits
+ 106              		.align	1
+ 107              		.global	checkMoveDown
+ 108              		.syntax unified
+ 109              		.code	16
+ 110              		.thumb_func
+ 112              	checkMoveDown:
+ 113              	.LVL11:
+ 114              	.LFB4:
+  33:Core/Src/game_control.c **** 
+  34:Core/Src/game_control.c **** uint8_t checkMoveDown(char *play_field){
+ 115              		.loc 1 34 40 is_stmt 1 view -0
+ 116              		.cfi_startproc
+ 117              		@ args = 0, pretend = 0, frame = 0
+ 118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119              		.loc 1 34 40 is_stmt 0 view .LVU24
+ 120 0000 70B5     		push	{r4, r5, r6, lr}
+ 121              		.cfi_def_cfa_offset 16
+ 122              		.cfi_offset 4, -16
+ 123              		.cfi_offset 5, -12
+ 124              		.cfi_offset 6, -8
+ 125              		.cfi_offset 14, -4
+ 126 0002 0600     		movs	r6, r0
+  35:Core/Src/game_control.c ****     uint8_t move_result = MOVE_POS;
+ 127              		.loc 1 35 5 is_stmt 1 view .LVU25
+ 128              	.LVL12:
+  36:Core/Src/game_control.c **** 
+  37:Core/Src/game_control.c ****     for(int16_t i=(MAX_ROWS-1); i>(-1); i--){
+ 129              		.loc 1 37 5 view .LVU26
+ 130              	.LBB6:
+ 131              		.loc 1 37 9 view .LVU27
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 4
+
+
+ 132              		.loc 1 37 17 is_stmt 0 view .LVU28
+ 133 0004 0D21     		movs	r1, #13
+ 134              	.LBE6:
+  35:Core/Src/game_control.c ****     uint8_t move_result = MOVE_POS;
+ 135              		.loc 1 35 13 view .LVU29
+ 136 0006 0120     		movs	r0, #1
+ 137              	.LVL13:
+ 138              	.LBB9:
+ 139              		.loc 1 37 5 view .LVU30
+ 140 0008 1AE0     		b	.L11
+ 141              	.LVL14:
+ 142              	.L20:
+ 143              	.LBB7:
+  38:Core/Src/game_control.c ****             for(uint16_t j=0; j<MAX_COLUMNS; j++){
+  39:Core/Src/game_control.c ****                 if(*(play_field + i*MAX_COLUMNS + j) == BLOCK_SYMBOL){
+  40:Core/Src/game_control.c ****                     if(i == (MAX_ROWS-1)) move_result = MOVE_IMPOS;
+ 144              		.loc 1 40 55 view .LVU31
+ 145 000a 0020     		movs	r0, #0
+ 146              	.LVL15:
+ 147              		.loc 1 40 55 view .LVU32
+ 148 000c 0DE0     		b	.L13
+ 149              	.LVL16:
+ 150              	.L12:
+  38:Core/Src/game_control.c ****             for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 151              		.loc 1 38 47 is_stmt 1 discriminator 2 view .LVU33
+ 152 000e 0133     		adds	r3, r3, #1
+ 153              	.LVL17:
+  38:Core/Src/game_control.c ****             for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 154              		.loc 1 38 47 is_stmt 0 discriminator 2 view .LVU34
+ 155 0010 9BB2     		uxth	r3, r3
+ 156              	.LVL18:
+ 157              	.L15:
+  38:Core/Src/game_control.c ****             for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 158              		.loc 1 38 32 is_stmt 1 discriminator 1 view .LVU35
+ 159 0012 042B     		cmp	r3, #4
+ 160 0014 12D8     		bhi	.L19
+  39:Core/Src/game_control.c ****                     if(i == (MAX_ROWS-1)) move_result = MOVE_IMPOS;
+ 161              		.loc 1 39 17 view .LVU36
+  39:Core/Src/game_control.c ****                     if(i == (MAX_ROWS-1)) move_result = MOVE_IMPOS;
+ 162              		.loc 1 39 36 is_stmt 0 view .LVU37
+ 163 0016 0C00     		movs	r4, r1
+ 164 0018 8A00     		lsls	r2, r1, #2
+ 165 001a 5218     		adds	r2, r2, r1
+  39:Core/Src/game_control.c ****                     if(i == (MAX_ROWS-1)) move_result = MOVE_IMPOS;
+ 166              		.loc 1 39 49 view .LVU38
+ 167 001c 1D00     		movs	r5, r3
+ 168 001e D218     		adds	r2, r2, r3
+  39:Core/Src/game_control.c ****                     if(i == (MAX_ROWS-1)) move_result = MOVE_IMPOS;
+ 169              		.loc 1 39 20 view .LVU39
+ 170 0020 B25C     		ldrb	r2, [r6, r2]
+  39:Core/Src/game_control.c ****                     if(i == (MAX_ROWS-1)) move_result = MOVE_IMPOS;
+ 171              		.loc 1 39 19 view .LVU40
+ 172 0022 232A     		cmp	r2, #35
+ 173 0024 F3D1     		bne	.L12
+ 174              		.loc 1 40 21 is_stmt 1 view .LVU41
+ 175              		.loc 1 40 23 is_stmt 0 view .LVU42
+ 176 0026 0D29     		cmp	r1, #13
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 5
+
+
+ 177 0028 EFD0     		beq	.L20
+ 178              	.LVL19:
+ 179              	.L13:
+  41:Core/Src/game_control.c ****                     if(*(play_field + (i+1)*MAX_COLUMNS + j) == DEAD_SYMBOL) move_result = MOVE_IMP
+ 180              		.loc 1 41 21 is_stmt 1 view .LVU43
+ 181              		.loc 1 41 41 is_stmt 0 view .LVU44
+ 182 002a 621C     		adds	r2, r4, #1
+ 183              		.loc 1 41 44 view .LVU45
+ 184 002c 9400     		lsls	r4, r2, #2
+ 185 002e A218     		adds	r2, r4, r2
+ 186              		.loc 1 41 57 view .LVU46
+ 187 0030 AA18     		adds	r2, r5, r2
+ 188              		.loc 1 41 24 view .LVU47
+ 189 0032 B25C     		ldrb	r2, [r6, r2]
+ 190              		.loc 1 41 23 view .LVU48
+ 191 0034 582A     		cmp	r2, #88
+ 192 0036 EAD1     		bne	.L12
+ 193              		.loc 1 41 90 view .LVU49
+ 194 0038 0020     		movs	r0, #0
+ 195              	.LVL20:
+ 196              		.loc 1 41 90 view .LVU50
+ 197 003a E8E7     		b	.L12
+ 198              	.LVL21:
+ 199              	.L19:
+ 200              		.loc 1 41 90 view .LVU51
+ 201              	.LBE7:
+  37:Core/Src/game_control.c ****             for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 202              		.loc 1 37 42 is_stmt 1 discriminator 2 view .LVU52
+ 203 003c 0139     		subs	r1, r1, #1
+ 204              	.LVL22:
+  37:Core/Src/game_control.c ****             for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 205              		.loc 1 37 42 is_stmt 0 discriminator 2 view .LVU53
+ 206 003e 09B2     		sxth	r1, r1
+ 207              	.LVL23:
+ 208              	.L11:
+  37:Core/Src/game_control.c ****             for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 209              		.loc 1 37 34 is_stmt 1 discriminator 1 view .LVU54
+ 210 0040 0029     		cmp	r1, #0
+ 211 0042 01DB     		blt	.L21
+ 212              	.LBB8:
+  38:Core/Src/game_control.c ****                 if(*(play_field + i*MAX_COLUMNS + j) == BLOCK_SYMBOL){
+ 213              		.loc 1 38 26 is_stmt 0 view .LVU55
+ 214 0044 0023     		movs	r3, #0
+ 215 0046 E4E7     		b	.L15
+ 216              	.L21:
+ 217              	.LBE8:
+ 218              	.LBE9:
+  42:Core/Src/game_control.c ****                 }
+  43:Core/Src/game_control.c ****             }
+  44:Core/Src/game_control.c ****     }
+  45:Core/Src/game_control.c ****     return move_result; 
+ 219              		.loc 1 45 5 is_stmt 1 view .LVU56
+  46:Core/Src/game_control.c **** }
+ 220              		.loc 1 46 1 is_stmt 0 view .LVU57
+ 221              		@ sp needed
+ 222              	.LVL24:
+ 223              		.loc 1 46 1 view .LVU58
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 6
+
+
+ 224 0048 70BD     		pop	{r4, r5, r6, pc}
+ 225              		.cfi_endproc
+ 226              	.LFE4:
+ 228              		.global	__aeabi_idivmod
+ 229              		.section	.text.getRandomShape,"ax",%progbits
+ 230              		.align	1
+ 231              		.global	getRandomShape
+ 232              		.syntax unified
+ 233              		.code	16
+ 234              		.thumb_func
+ 236              	getRandomShape:
+ 237              	.LFB5:
+  47:Core/Src/game_control.c **** 
+  48:Core/Src/game_control.c **** 
+  49:Core/Src/game_control.c **** struct_Shape_Data *getRandomShape(){
+ 238              		.loc 1 49 36 is_stmt 1 view -0
+ 239              		.cfi_startproc
+ 240              		@ args = 0, pretend = 0, frame = 0
+ 241              		@ frame_needed = 0, uses_anonymous_args = 0
+ 242 0000 10B5     		push	{r4, lr}
+ 243              		.cfi_def_cfa_offset 8
+ 244              		.cfi_offset 4, -8
+ 245              		.cfi_offset 14, -4
+  50:Core/Src/game_control.c ****     static struct_Shape_Data shape_data;
+ 246              		.loc 1 50 5 view .LVU60
+  51:Core/Src/game_control.c **** 
+  52:Core/Src/game_control.c ****     switch (rand() % NUM_SHAPES){
+ 247              		.loc 1 52 5 view .LVU61
+ 248              		.loc 1 52 13 is_stmt 0 view .LVU62
+ 249 0002 FFF7FEFF 		bl	rand
+ 250              	.LVL25:
+ 251              		.loc 1 52 20 view .LVU63
+ 252 0006 0721     		movs	r1, #7
+ 253 0008 FFF7FEFF 		bl	__aeabi_idivmod
+ 254              	.LVL26:
+ 255              		.loc 1 52 5 view .LVU64
+ 256 000c 0629     		cmp	r1, #6
+ 257 000e 08D8     		bhi	.L23
+ 258 0010 8900     		lsls	r1, r1, #2
+ 259 0012 174B     		ldr	r3, .L32
+ 260 0014 5B58     		ldr	r3, [r3, r1]
+ 261 0016 9F46     		mov	pc, r3
+ 262              		.section	.rodata.getRandomShape,"a",%progbits
+ 263              		.align	2
+ 264              	.L25:
+ 265 0000 18000000 		.word	.L31
+ 266 0004 26000000 		.word	.L30
+ 267 0008 32000000 		.word	.L29
+ 268 000c 3E000000 		.word	.L28
+ 269 0010 4A000000 		.word	.L27
+ 270 0014 56000000 		.word	.L26
+ 271 0018 62000000 		.word	.L24
+ 272              		.section	.text.getRandomShape
+ 273              	.L31:
+  53:Core/Src/game_control.c ****         case I_BEAM:
+  54:Core/Src/game_control.c ****             shape_data.data = I_BLOCK_DATA;
+ 274              		.loc 1 54 13 is_stmt 1 view .LVU65
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 7
+
+
+ 275              		.loc 1 54 29 is_stmt 0 view .LVU66
+ 276 0018 164B     		ldr	r3, .L32+4
+ 277 001a 174A     		ldr	r2, .L32+8
+ 278 001c 1A60     		str	r2, [r3]
+  55:Core/Src/game_control.c ****             shape_data.width = 1;
+ 279              		.loc 1 55 13 is_stmt 1 view .LVU67
+ 280              		.loc 1 55 30 is_stmt 0 view .LVU68
+ 281 001e 0122     		movs	r2, #1
+ 282 0020 1A71     		strb	r2, [r3, #4]
+  56:Core/Src/game_control.c ****             break;
+ 283              		.loc 1 56 13 is_stmt 1 view .LVU69
+ 284              	.L23:
+  57:Core/Src/game_control.c ****         case O_BLOCK:
+  58:Core/Src/game_control.c ****             shape_data.data = O_BLOCK_DATA; 
+  59:Core/Src/game_control.c ****             shape_data.width = 2;
+  60:Core/Src/game_control.c ****             break;
+  61:Core/Src/game_control.c ****         case T_BLOCK:
+  62:Core/Src/game_control.c ****             shape_data.data = T_BLOCK_DATA;
+  63:Core/Src/game_control.c ****             shape_data.width = 2; 
+  64:Core/Src/game_control.c ****             break;
+  65:Core/Src/game_control.c ****         case L_BLOCK:
+  66:Core/Src/game_control.c ****             shape_data.data = L_BLOCK_DATA;
+  67:Core/Src/game_control.c ****             shape_data.width = 2; 
+  68:Core/Src/game_control.c ****             break;
+  69:Core/Src/game_control.c ****         case J_BLOCK:
+  70:Core/Src/game_control.c ****             shape_data.data = J_BLOCK_DATA;
+  71:Core/Src/game_control.c ****             shape_data.width = 2; 
+  72:Core/Src/game_control.c ****             break;
+  73:Core/Src/game_control.c ****         case S_BLOCK:
+  74:Core/Src/game_control.c ****             shape_data.data = S_BLOCK_DATA;
+  75:Core/Src/game_control.c ****             shape_data.width = 2; 
+  76:Core/Src/game_control.c ****             break;
+  77:Core/Src/game_control.c ****         case Z_BLOCK:
+  78:Core/Src/game_control.c ****             shape_data.data = Z_BLOCK_DATA;
+  79:Core/Src/game_control.c ****             shape_data.width = 2; 
+  80:Core/Src/game_control.c ****             break;
+  81:Core/Src/game_control.c ****     }
+  82:Core/Src/game_control.c ****     return &shape_data;
+ 285              		.loc 1 82 5 view .LVU70
+ 286              		.loc 1 82 12 is_stmt 0 view .LVU71
+ 287 0022 1448     		ldr	r0, .L32+4
+  83:Core/Src/game_control.c **** }
+ 288              		.loc 1 83 1 view .LVU72
+ 289              		@ sp needed
+ 290 0024 10BD     		pop	{r4, pc}
+ 291              	.L30:
+  58:Core/Src/game_control.c ****             shape_data.width = 2;
+ 292              		.loc 1 58 13 is_stmt 1 view .LVU73
+  58:Core/Src/game_control.c ****             shape_data.width = 2;
+ 293              		.loc 1 58 29 is_stmt 0 view .LVU74
+ 294 0026 134B     		ldr	r3, .L32+4
+ 295 0028 144A     		ldr	r2, .L32+12
+ 296 002a 1A60     		str	r2, [r3]
+  59:Core/Src/game_control.c ****             break;
+ 297              		.loc 1 59 13 is_stmt 1 view .LVU75
+  59:Core/Src/game_control.c ****             break;
+ 298              		.loc 1 59 30 is_stmt 0 view .LVU76
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 8
+
+
+ 299 002c 0222     		movs	r2, #2
+ 300 002e 1A71     		strb	r2, [r3, #4]
+  60:Core/Src/game_control.c ****         case T_BLOCK:
+ 301              		.loc 1 60 13 is_stmt 1 view .LVU77
+ 302 0030 F7E7     		b	.L23
+ 303              	.L29:
+  62:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 304              		.loc 1 62 13 view .LVU78
+  62:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 305              		.loc 1 62 29 is_stmt 0 view .LVU79
+ 306 0032 104B     		ldr	r3, .L32+4
+ 307 0034 124A     		ldr	r2, .L32+16
+ 308 0036 1A60     		str	r2, [r3]
+  63:Core/Src/game_control.c ****             break;
+ 309              		.loc 1 63 13 is_stmt 1 view .LVU80
+  63:Core/Src/game_control.c ****             break;
+ 310              		.loc 1 63 30 is_stmt 0 view .LVU81
+ 311 0038 0222     		movs	r2, #2
+ 312 003a 1A71     		strb	r2, [r3, #4]
+  64:Core/Src/game_control.c ****         case L_BLOCK:
+ 313              		.loc 1 64 13 is_stmt 1 view .LVU82
+ 314 003c F1E7     		b	.L23
+ 315              	.L28:
+  66:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 316              		.loc 1 66 13 view .LVU83
+  66:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 317              		.loc 1 66 29 is_stmt 0 view .LVU84
+ 318 003e 0D4B     		ldr	r3, .L32+4
+ 319 0040 104A     		ldr	r2, .L32+20
+ 320 0042 1A60     		str	r2, [r3]
+  67:Core/Src/game_control.c ****             break;
+ 321              		.loc 1 67 13 is_stmt 1 view .LVU85
+  67:Core/Src/game_control.c ****             break;
+ 322              		.loc 1 67 30 is_stmt 0 view .LVU86
+ 323 0044 0222     		movs	r2, #2
+ 324 0046 1A71     		strb	r2, [r3, #4]
+  68:Core/Src/game_control.c ****         case J_BLOCK:
+ 325              		.loc 1 68 13 is_stmt 1 view .LVU87
+ 326 0048 EBE7     		b	.L23
+ 327              	.L27:
+  70:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 328              		.loc 1 70 13 view .LVU88
+  70:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 329              		.loc 1 70 29 is_stmt 0 view .LVU89
+ 330 004a 0A4B     		ldr	r3, .L32+4
+ 331 004c 0E4A     		ldr	r2, .L32+24
+ 332 004e 1A60     		str	r2, [r3]
+  71:Core/Src/game_control.c ****             break;
+ 333              		.loc 1 71 13 is_stmt 1 view .LVU90
+  71:Core/Src/game_control.c ****             break;
+ 334              		.loc 1 71 30 is_stmt 0 view .LVU91
+ 335 0050 0222     		movs	r2, #2
+ 336 0052 1A71     		strb	r2, [r3, #4]
+  72:Core/Src/game_control.c ****         case S_BLOCK:
+ 337              		.loc 1 72 13 is_stmt 1 view .LVU92
+ 338 0054 E5E7     		b	.L23
+ 339              	.L26:
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 9
+
+
+  74:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 340              		.loc 1 74 13 view .LVU93
+  74:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 341              		.loc 1 74 29 is_stmt 0 view .LVU94
+ 342 0056 074B     		ldr	r3, .L32+4
+ 343 0058 0C4A     		ldr	r2, .L32+28
+ 344 005a 1A60     		str	r2, [r3]
+  75:Core/Src/game_control.c ****             break;
+ 345              		.loc 1 75 13 is_stmt 1 view .LVU95
+  75:Core/Src/game_control.c ****             break;
+ 346              		.loc 1 75 30 is_stmt 0 view .LVU96
+ 347 005c 0222     		movs	r2, #2
+ 348 005e 1A71     		strb	r2, [r3, #4]
+  76:Core/Src/game_control.c ****         case Z_BLOCK:
+ 349              		.loc 1 76 13 is_stmt 1 view .LVU97
+ 350 0060 DFE7     		b	.L23
+ 351              	.L24:
+  78:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 352              		.loc 1 78 13 view .LVU98
+  78:Core/Src/game_control.c ****             shape_data.width = 2; 
+ 353              		.loc 1 78 29 is_stmt 0 view .LVU99
+ 354 0062 044B     		ldr	r3, .L32+4
+ 355 0064 0A4A     		ldr	r2, .L32+32
+ 356 0066 1A60     		str	r2, [r3]
+  79:Core/Src/game_control.c ****             break;
+ 357              		.loc 1 79 13 is_stmt 1 view .LVU100
+  79:Core/Src/game_control.c ****             break;
+ 358              		.loc 1 79 30 is_stmt 0 view .LVU101
+ 359 0068 0222     		movs	r2, #2
+ 360 006a 1A71     		strb	r2, [r3, #4]
+  80:Core/Src/game_control.c ****     }
+ 361              		.loc 1 80 13 is_stmt 1 view .LVU102
+ 362 006c D9E7     		b	.L23
+ 363              	.L33:
+ 364 006e C046     		.align	2
+ 365              	.L32:
+ 366 0070 00000000 		.word	.L25
+ 367 0074 00000000 		.word	shape_data.1
+ 368 0078 00000000 		.word	I_BLOCK_DATA
+ 369 007c 00000000 		.word	O_BLOCK_DATA
+ 370 0080 00000000 		.word	T_BLOCK_DATA
+ 371 0084 00000000 		.word	L_BLOCK_DATA
+ 372 0088 00000000 		.word	J_BLOCK_DATA
+ 373 008c 00000000 		.word	S_BLOCK_DATA
+ 374 0090 00000000 		.word	Z_BLOCK_DATA
+ 375              		.cfi_endproc
+ 376              	.LFE5:
+ 378              		.section	.text.getShapeCoord,"ax",%progbits
+ 379              		.align	1
+ 380              		.global	getShapeCoord
+ 381              		.syntax unified
+ 382              		.code	16
+ 383              		.thumb_func
+ 385              	getShapeCoord:
+ 386              	.LVL27:
+ 387              	.LFB6:
+  84:Core/Src/game_control.c **** 
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 10
+
+
+  85:Core/Src/game_control.c **** uint8_t getShapeCoord(char *play_field, int8_t (*shape_coord)[2]){
+ 388              		.loc 1 85 66 view -0
+ 389              		.cfi_startproc
+ 390              		@ args = 0, pretend = 0, frame = 0
+ 391              		@ frame_needed = 0, uses_anonymous_args = 0
+ 392              		.loc 1 85 66 is_stmt 0 view .LVU104
+ 393 0000 30B5     		push	{r4, r5, lr}
+ 394              		.cfi_def_cfa_offset 12
+ 395              		.cfi_offset 4, -12
+ 396              		.cfi_offset 5, -8
+ 397              		.cfi_offset 14, -4
+ 398 0002 0400     		movs	r4, r0
+ 399 0004 0D00     		movs	r5, r1
+  86:Core/Src/game_control.c ****     uint8_t counter = 0;
+ 400              		.loc 1 86 5 is_stmt 1 view .LVU105
+ 401              	.LVL28:
+  87:Core/Src/game_control.c **** 
+  88:Core/Src/game_control.c ****     for(uint16_t i=0; i<MAX_ROWS; i++){
+ 402              		.loc 1 88 5 view .LVU106
+ 403              	.LBB10:
+ 404              		.loc 1 88 9 view .LVU107
+ 405              		.loc 1 88 18 is_stmt 0 view .LVU108
+ 406 0006 0021     		movs	r1, #0
+ 407              	.LVL29:
+ 408              		.loc 1 88 18 view .LVU109
+ 409              	.LBE10:
+  86:Core/Src/game_control.c ****     uint8_t counter = 0;
+ 410              		.loc 1 86 13 view .LVU110
+ 411 0008 0020     		movs	r0, #0
+ 412              	.LVL30:
+ 413              	.LBB13:
+ 414              		.loc 1 88 5 view .LVU111
+ 415 000a 12E0     		b	.L35
+ 416              	.LVL31:
+ 417              	.L36:
+ 418              	.LBB11:
+  89:Core/Src/game_control.c ****         for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 419              		.loc 1 89 43 is_stmt 1 discriminator 2 view .LVU112
+ 420 000c 0133     		adds	r3, r3, #1
+ 421              	.LVL32:
+ 422              		.loc 1 89 43 is_stmt 0 discriminator 2 view .LVU113
+ 423 000e 9BB2     		uxth	r3, r3
+ 424              	.LVL33:
+ 425              	.L38:
+ 426              		.loc 1 89 28 is_stmt 1 discriminator 1 view .LVU114
+ 427 0010 042B     		cmp	r3, #4
+ 428 0012 0CD8     		bhi	.L40
+  90:Core/Src/game_control.c ****             if(*(play_field + i*MAX_COLUMNS + j) == BLOCK_SYMBOL){
+ 429              		.loc 1 90 13 view .LVU115
+ 430              		.loc 1 90 32 is_stmt 0 view .LVU116
+ 431 0014 8A00     		lsls	r2, r1, #2
+ 432 0016 5218     		adds	r2, r2, r1
+ 433              		.loc 1 90 45 view .LVU117
+ 434 0018 9A18     		adds	r2, r3, r2
+ 435              		.loc 1 90 16 view .LVU118
+ 436 001a A25C     		ldrb	r2, [r4, r2]
+ 437              		.loc 1 90 15 view .LVU119
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 11
+
+
+ 438 001c 232A     		cmp	r2, #35
+ 439 001e F5D1     		bne	.L36
+  91:Core/Src/game_control.c ****                 shape_coord[counter][0] = j;
+ 440              		.loc 1 91 17 is_stmt 1 view .LVU120
+ 441              		.loc 1 91 28 is_stmt 0 view .LVU121
+ 442 0020 4200     		lsls	r2, r0, #1
+ 443 0022 AA18     		adds	r2, r5, r2
+ 444              		.loc 1 91 41 view .LVU122
+ 445 0024 1370     		strb	r3, [r2]
+  92:Core/Src/game_control.c ****                 shape_coord[counter][1] = i;
+ 446              		.loc 1 92 17 is_stmt 1 view .LVU123
+ 447              		.loc 1 92 41 is_stmt 0 view .LVU124
+ 448 0026 5170     		strb	r1, [r2, #1]
+  93:Core/Src/game_control.c ****                 counter++;
+ 449              		.loc 1 93 17 is_stmt 1 view .LVU125
+ 450              		.loc 1 93 24 is_stmt 0 view .LVU126
+ 451 0028 0130     		adds	r0, r0, #1
+ 452              	.LVL34:
+ 453              		.loc 1 93 24 view .LVU127
+ 454 002a C0B2     		uxtb	r0, r0
+ 455              	.LVL35:
+ 456              		.loc 1 93 24 view .LVU128
+ 457 002c EEE7     		b	.L36
+ 458              	.L40:
+ 459              		.loc 1 93 24 view .LVU129
+ 460              	.LBE11:
+  88:Core/Src/game_control.c ****         for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 461              		.loc 1 88 36 is_stmt 1 discriminator 2 view .LVU130
+ 462 002e 0131     		adds	r1, r1, #1
+ 463              	.LVL36:
+  88:Core/Src/game_control.c ****         for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 464              		.loc 1 88 36 is_stmt 0 discriminator 2 view .LVU131
+ 465 0030 89B2     		uxth	r1, r1
+ 466              	.LVL37:
+ 467              	.L35:
+  88:Core/Src/game_control.c ****         for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 468              		.loc 1 88 24 is_stmt 1 discriminator 1 view .LVU132
+ 469 0032 0D29     		cmp	r1, #13
+ 470 0034 01D8     		bhi	.L41
+ 471              	.LBB12:
+  89:Core/Src/game_control.c ****             if(*(play_field + i*MAX_COLUMNS + j) == BLOCK_SYMBOL){
+ 472              		.loc 1 89 22 is_stmt 0 view .LVU133
+ 473 0036 0023     		movs	r3, #0
+ 474 0038 EAE7     		b	.L38
+ 475              	.L41:
+ 476              	.LBE12:
+ 477              	.LBE13:
+  94:Core/Src/game_control.c ****             }
+  95:Core/Src/game_control.c ****         }
+  96:Core/Src/game_control.c ****     }
+  97:Core/Src/game_control.c ****     return 0;
+ 478              		.loc 1 97 5 is_stmt 1 view .LVU134
+  98:Core/Src/game_control.c **** }
+ 479              		.loc 1 98 1 is_stmt 0 view .LVU135
+ 480 003a 0020     		movs	r0, #0
+ 481              	.LVL38:
+ 482              		.loc 1 98 1 view .LVU136
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 12
+
+
+ 483              		@ sp needed
+ 484              	.LVL39:
+ 485              	.LVL40:
+ 486              		.loc 1 98 1 view .LVU137
+ 487 003c 30BD     		pop	{r4, r5, pc}
+ 488              		.cfi_endproc
+ 489              	.LFE6:
+ 491              		.section	.text.eraseShape,"ax",%progbits
+ 492              		.align	1
+ 493              		.global	eraseShape
+ 494              		.syntax unified
+ 495              		.code	16
+ 496              		.thumb_func
+ 498              	eraseShape:
+ 499              	.LVL41:
+ 500              	.LFB7:
+  99:Core/Src/game_control.c **** 
+ 100:Core/Src/game_control.c **** uint8_t eraseShape(char *play_field){
+ 501              		.loc 1 100 37 is_stmt 1 view -0
+ 502              		.cfi_startproc
+ 503              		@ args = 0, pretend = 0, frame = 8
+ 504              		@ frame_needed = 0, uses_anonymous_args = 0
+ 505              		.loc 1 100 37 is_stmt 0 view .LVU139
+ 506 0000 10B5     		push	{r4, lr}
+ 507              		.cfi_def_cfa_offset 8
+ 508              		.cfi_offset 4, -8
+ 509              		.cfi_offset 14, -4
+ 510 0002 82B0     		sub	sp, sp, #8
+ 511              		.cfi_def_cfa_offset 16
+ 512 0004 0400     		movs	r4, r0
+ 101:Core/Src/game_control.c ****     int8_t shape_coord[4][2];
+ 513              		.loc 1 101 5 is_stmt 1 view .LVU140
+ 102:Core/Src/game_control.c ****     uint8_t x, y = 0;
+ 514              		.loc 1 102 5 view .LVU141
+ 515              	.LVL42:
+ 103:Core/Src/game_control.c ****     getShapeCoord(play_field, shape_coord);
+ 516              		.loc 1 103 5 view .LVU142
+ 517 0006 6946     		mov	r1, sp
+ 518 0008 FFF7FEFF 		bl	getShapeCoord
+ 519              	.LVL43:
+ 104:Core/Src/game_control.c **** 
+ 105:Core/Src/game_control.c ****     for(uint8_t i=0;i<4;i++){
+ 520              		.loc 1 105 5 view .LVU143
+ 521              	.LBB14:
+ 522              		.loc 1 105 9 view .LVU144
+ 523              		.loc 1 105 17 is_stmt 0 view .LVU145
+ 524 000c 0023     		movs	r3, #0
+ 525              		.loc 1 105 5 view .LVU146
+ 526 000e 0BE0     		b	.L43
+ 527              	.LVL44:
+ 528              	.L44:
+ 106:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 529              		.loc 1 106 9 is_stmt 1 discriminator 3 view .LVU147
+ 530              		.loc 1 106 27 is_stmt 0 discriminator 3 view .LVU148
+ 531 0010 5A00     		lsls	r2, r3, #1
+ 532              		.loc 1 106 11 discriminator 3 view .LVU149
+ 533 0012 6946     		mov	r1, sp
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 13
+
+
+ 534 0014 515C     		ldrb	r1, [r2, r1]
+ 535              	.LVL45:
+ 107:Core/Src/game_control.c ****         y = shape_coord[i][1];
+ 536              		.loc 1 107 9 is_stmt 1 discriminator 3 view .LVU150
+ 537              		.loc 1 107 27 is_stmt 0 discriminator 3 view .LVU151
+ 538 0016 6A44     		add	r2, r2, sp
+ 539              	.LVL46:
+ 540              		.loc 1 107 11 discriminator 3 view .LVU152
+ 541 0018 5078     		ldrb	r0, [r2, #1]
+ 542              	.LVL47:
+ 108:Core/Src/game_control.c ****         *(play_field + y*MAX_COLUMNS + x) = EMPTY_SYMBOL;
+ 543              		.loc 1 108 9 is_stmt 1 discriminator 3 view .LVU153
+ 544              		.loc 1 108 25 is_stmt 0 discriminator 3 view .LVU154
+ 545 001a 8200     		lsls	r2, r0, #2
+ 546              	.LVL48:
+ 547              		.loc 1 108 25 discriminator 3 view .LVU155
+ 548 001c 1218     		adds	r2, r2, r0
+ 549              		.loc 1 108 38 discriminator 3 view .LVU156
+ 550 001e 8A18     		adds	r2, r1, r2
+ 551              		.loc 1 108 43 discriminator 3 view .LVU157
+ 552 0020 2021     		movs	r1, #32
+ 553 0022 A154     		strb	r1, [r4, r2]
+ 554              	.LVL49:
+ 105:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 555              		.loc 1 105 26 is_stmt 1 discriminator 3 view .LVU158
+ 556 0024 0133     		adds	r3, r3, #1
+ 557              	.LVL50:
+ 105:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 558              		.loc 1 105 26 is_stmt 0 discriminator 3 view .LVU159
+ 559 0026 DBB2     		uxtb	r3, r3
+ 560              	.LVL51:
+ 561              	.L43:
+ 105:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 562              		.loc 1 105 22 is_stmt 1 discriminator 1 view .LVU160
+ 563 0028 032B     		cmp	r3, #3
+ 564 002a F1D9     		bls	.L44
+ 565              	.LBE14:
+ 109:Core/Src/game_control.c ****     }
+ 110:Core/Src/game_control.c **** 
+ 111:Core/Src/game_control.c ****     return 0;
+ 566              		.loc 1 111 5 view .LVU161
+ 112:Core/Src/game_control.c **** }
+ 567              		.loc 1 112 1 is_stmt 0 view .LVU162
+ 568 002c 0020     		movs	r0, #0
+ 569 002e 02B0     		add	sp, sp, #8
+ 570              		@ sp needed
+ 571              	.LVL52:
+ 572              		.loc 1 112 1 view .LVU163
+ 573 0030 10BD     		pop	{r4, pc}
+ 574              		.cfi_endproc
+ 575              	.LFE7:
+ 577              		.section	.text.writeShape,"ax",%progbits
+ 578              		.align	1
+ 579              		.global	writeShape
+ 580              		.syntax unified
+ 581              		.code	16
+ 582              		.thumb_func
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 14
+
+
+ 584              	writeShape:
+ 585              	.LVL53:
+ 586              	.LFB8:
+ 113:Core/Src/game_control.c **** 
+ 114:Core/Src/game_control.c **** uint8_t writeShape(char *play_field, int8_t (*shape_coord)[2]){
+ 587              		.loc 1 114 63 is_stmt 1 view -0
+ 588              		.cfi_startproc
+ 589              		@ args = 0, pretend = 0, frame = 0
+ 590              		@ frame_needed = 0, uses_anonymous_args = 0
+ 591              		.loc 1 114 63 is_stmt 0 view .LVU165
+ 592 0000 30B5     		push	{r4, r5, lr}
+ 593              		.cfi_def_cfa_offset 12
+ 594              		.cfi_offset 4, -12
+ 595              		.cfi_offset 5, -8
+ 596              		.cfi_offset 14, -4
+ 115:Core/Src/game_control.c ****     uint8_t x,y = 0;
+ 597              		.loc 1 115 5 is_stmt 1 view .LVU166
+ 598              	.LVL54:
+ 116:Core/Src/game_control.c **** 
+ 117:Core/Src/game_control.c ****     for(uint8_t i=0;i<4;i++){
+ 599              		.loc 1 117 5 view .LVU167
+ 600              	.LBB15:
+ 601              		.loc 1 117 9 view .LVU168
+ 602              		.loc 1 117 17 is_stmt 0 view .LVU169
+ 603 0002 0023     		movs	r3, #0
+ 604              		.loc 1 117 5 view .LVU170
+ 605 0004 0AE0     		b	.L46
+ 606              	.LVL55:
+ 607              	.L47:
+ 118:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 608              		.loc 1 118 9 is_stmt 1 discriminator 3 view .LVU171
+ 609              		.loc 1 118 24 is_stmt 0 discriminator 3 view .LVU172
+ 610 0006 5A00     		lsls	r2, r3, #1
+ 611 0008 8C18     		adds	r4, r1, r2
+ 612              		.loc 1 118 11 discriminator 3 view .LVU173
+ 613 000a 8A5C     		ldrb	r2, [r1, r2]
+ 614              	.LVL56:
+ 119:Core/Src/game_control.c ****         y = shape_coord[i][1];
+ 615              		.loc 1 119 9 is_stmt 1 discriminator 3 view .LVU174
+ 616              		.loc 1 119 11 is_stmt 0 discriminator 3 view .LVU175
+ 617 000c 6578     		ldrb	r5, [r4, #1]
+ 618              	.LVL57:
+ 120:Core/Src/game_control.c ****         *(play_field + y*MAX_COLUMNS + x) = BLOCK_SYMBOL;
+ 619              		.loc 1 120 9 is_stmt 1 discriminator 3 view .LVU176
+ 620              		.loc 1 120 25 is_stmt 0 discriminator 3 view .LVU177
+ 621 000e AC00     		lsls	r4, r5, #2
+ 622              	.LVL58:
+ 623              		.loc 1 120 25 discriminator 3 view .LVU178
+ 624 0010 6419     		adds	r4, r4, r5
+ 625              		.loc 1 120 38 discriminator 3 view .LVU179
+ 626 0012 1219     		adds	r2, r2, r4
+ 627              		.loc 1 120 43 discriminator 3 view .LVU180
+ 628 0014 2324     		movs	r4, #35
+ 629 0016 8454     		strb	r4, [r0, r2]
+ 630              	.LVL59:
+ 117:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 631              		.loc 1 117 26 is_stmt 1 discriminator 3 view .LVU181
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 15
+
+
+ 632 0018 0133     		adds	r3, r3, #1
+ 633              	.LVL60:
+ 117:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 634              		.loc 1 117 26 is_stmt 0 discriminator 3 view .LVU182
+ 635 001a DBB2     		uxtb	r3, r3
+ 636              	.LVL61:
+ 637              	.L46:
+ 117:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 638              		.loc 1 117 22 is_stmt 1 discriminator 1 view .LVU183
+ 639 001c 032B     		cmp	r3, #3
+ 640 001e F2D9     		bls	.L47
+ 641              	.LBE15:
+ 121:Core/Src/game_control.c ****     }
+ 122:Core/Src/game_control.c **** 
+ 123:Core/Src/game_control.c ****     return 0;
+ 642              		.loc 1 123 5 view .LVU184
+ 124:Core/Src/game_control.c **** }
+ 643              		.loc 1 124 1 is_stmt 0 view .LVU185
+ 644 0020 0020     		movs	r0, #0
+ 645              	.LVL62:
+ 646              		.loc 1 124 1 view .LVU186
+ 647              		@ sp needed
+ 648 0022 30BD     		pop	{r4, r5, pc}
+ 649              		.cfi_endproc
+ 650              	.LFE8:
+ 652              		.section	.text.killShape,"ax",%progbits
+ 653              		.align	1
+ 654              		.global	killShape
+ 655              		.syntax unified
+ 656              		.code	16
+ 657              		.thumb_func
+ 659              	killShape:
+ 660              	.LVL63:
+ 661              	.LFB9:
+ 125:Core/Src/game_control.c **** 
+ 126:Core/Src/game_control.c **** uint8_t killShape(char *play_field){
+ 662              		.loc 1 126 36 is_stmt 1 view -0
+ 663              		.cfi_startproc
+ 664              		@ args = 0, pretend = 0, frame = 8
+ 665              		@ frame_needed = 0, uses_anonymous_args = 0
+ 666              		.loc 1 126 36 is_stmt 0 view .LVU188
+ 667 0000 10B5     		push	{r4, lr}
+ 668              		.cfi_def_cfa_offset 8
+ 669              		.cfi_offset 4, -8
+ 670              		.cfi_offset 14, -4
+ 671 0002 82B0     		sub	sp, sp, #8
+ 672              		.cfi_def_cfa_offset 16
+ 673 0004 0400     		movs	r4, r0
+ 127:Core/Src/game_control.c ****     uint8_t x,y = 0;
+ 674              		.loc 1 127 5 is_stmt 1 view .LVU189
+ 675              	.LVL64:
+ 128:Core/Src/game_control.c ****     int8_t shape_coord[4][2];
+ 676              		.loc 1 128 5 view .LVU190
+ 129:Core/Src/game_control.c ****     getShapeCoord(play_field, shape_coord);
+ 677              		.loc 1 129 5 view .LVU191
+ 678 0006 6946     		mov	r1, sp
+ 679 0008 FFF7FEFF 		bl	getShapeCoord
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 16
+
+
+ 680              	.LVL65:
+ 130:Core/Src/game_control.c **** 
+ 131:Core/Src/game_control.c ****     for(uint8_t i=0;i<4;i++){
+ 681              		.loc 1 131 5 view .LVU192
+ 682              	.LBB16:
+ 683              		.loc 1 131 9 view .LVU193
+ 684              		.loc 1 131 17 is_stmt 0 view .LVU194
+ 685 000c 0023     		movs	r3, #0
+ 686              		.loc 1 131 5 view .LVU195
+ 687 000e 0BE0     		b	.L49
+ 688              	.LVL66:
+ 689              	.L50:
+ 132:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 690              		.loc 1 132 9 is_stmt 1 discriminator 3 view .LVU196
+ 691              		.loc 1 132 27 is_stmt 0 discriminator 3 view .LVU197
+ 692 0010 5A00     		lsls	r2, r3, #1
+ 693              		.loc 1 132 11 discriminator 3 view .LVU198
+ 694 0012 6946     		mov	r1, sp
+ 695 0014 515C     		ldrb	r1, [r2, r1]
+ 696              	.LVL67:
+ 133:Core/Src/game_control.c ****         y = shape_coord[i][1];
+ 697              		.loc 1 133 9 is_stmt 1 discriminator 3 view .LVU199
+ 698              		.loc 1 133 27 is_stmt 0 discriminator 3 view .LVU200
+ 699 0016 6A44     		add	r2, r2, sp
+ 700              	.LVL68:
+ 701              		.loc 1 133 11 discriminator 3 view .LVU201
+ 702 0018 5078     		ldrb	r0, [r2, #1]
+ 703              	.LVL69:
+ 134:Core/Src/game_control.c ****         *(play_field + y*MAX_COLUMNS + x) = DEAD_SYMBOL;
+ 704              		.loc 1 134 9 is_stmt 1 discriminator 3 view .LVU202
+ 705              		.loc 1 134 25 is_stmt 0 discriminator 3 view .LVU203
+ 706 001a 8200     		lsls	r2, r0, #2
+ 707              	.LVL70:
+ 708              		.loc 1 134 25 discriminator 3 view .LVU204
+ 709 001c 1218     		adds	r2, r2, r0
+ 710              		.loc 1 134 38 discriminator 3 view .LVU205
+ 711 001e 8A18     		adds	r2, r1, r2
+ 712              		.loc 1 134 43 discriminator 3 view .LVU206
+ 713 0020 5821     		movs	r1, #88
+ 714 0022 A154     		strb	r1, [r4, r2]
+ 715              	.LVL71:
+ 131:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 716              		.loc 1 131 26 is_stmt 1 discriminator 3 view .LVU207
+ 717 0024 0133     		adds	r3, r3, #1
+ 718              	.LVL72:
+ 131:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 719              		.loc 1 131 26 is_stmt 0 discriminator 3 view .LVU208
+ 720 0026 DBB2     		uxtb	r3, r3
+ 721              	.LVL73:
+ 722              	.L49:
+ 131:Core/Src/game_control.c ****         x = shape_coord[i][0];
+ 723              		.loc 1 131 22 is_stmt 1 discriminator 1 view .LVU209
+ 724 0028 032B     		cmp	r3, #3
+ 725 002a F1D9     		bls	.L50
+ 726              	.LBE16:
+ 135:Core/Src/game_control.c ****     }
+ 136:Core/Src/game_control.c **** 
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 17
+
+
+ 137:Core/Src/game_control.c ****     return 0;
+ 727              		.loc 1 137 5 view .LVU210
+ 138:Core/Src/game_control.c **** }
+ 728              		.loc 1 138 1 is_stmt 0 view .LVU211
+ 729 002c 0020     		movs	r0, #0
+ 730 002e 02B0     		add	sp, sp, #8
+ 731              		@ sp needed
+ 732              	.LVL74:
+ 733              		.loc 1 138 1 view .LVU212
+ 734 0030 10BD     		pop	{r4, pc}
+ 735              		.cfi_endproc
+ 736              	.LFE9:
+ 738              		.section	.text.addShape,"ax",%progbits
+ 739              		.align	1
+ 740              		.global	addShape
+ 741              		.syntax unified
+ 742              		.code	16
+ 743              		.thumb_func
+ 745              	addShape:
+ 746              	.LVL75:
+ 747              	.LFB10:
+ 139:Core/Src/game_control.c **** 
+ 140:Core/Src/game_control.c **** 
+ 141:Core/Src/game_control.c **** uint8_t addShape(char *play_field){
+ 748              		.loc 1 141 35 is_stmt 1 view -0
+ 749              		.cfi_startproc
+ 750              		@ args = 0, pretend = 0, frame = 0
+ 751              		@ frame_needed = 0, uses_anonymous_args = 0
+ 752              		.loc 1 141 35 is_stmt 0 view .LVU214
+ 753 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 754              		.cfi_def_cfa_offset 24
+ 755              		.cfi_offset 3, -24
+ 756              		.cfi_offset 4, -20
+ 757              		.cfi_offset 5, -16
+ 758              		.cfi_offset 6, -12
+ 759              		.cfi_offset 7, -8
+ 760              		.cfi_offset 14, -4
+ 761 0002 CE46     		mov	lr, r9
+ 762 0004 4746     		mov	r7, r8
+ 763 0006 80B5     		push	{r7, lr}
+ 764              		.cfi_def_cfa_offset 32
+ 765              		.cfi_offset 8, -32
+ 766              		.cfi_offset 9, -28
+ 767 0008 8046     		mov	r8, r0
+ 142:Core/Src/game_control.c ****     //todo: Consider putting this in a separate function
+ 143:Core/Src/game_control.c ****     struct_Shape_Data *sel_shape = getRandomShape();
+ 768              		.loc 1 143 5 is_stmt 1 view .LVU215
+ 769              		.loc 1 143 36 is_stmt 0 view .LVU216
+ 770 000a FFF7FEFF 		bl	getRandomShape
+ 771              	.LVL76:
+ 144:Core/Src/game_control.c ****     const char *shape_data = sel_shape->data;
+ 772              		.loc 1 144 5 is_stmt 1 view .LVU217
+ 773              		.loc 1 144 17 is_stmt 0 view .LVU218
+ 774 000e 0368     		ldr	r3, [r0]
+ 775 0010 9946     		mov	r9, r3
+ 776              	.LVL77:
+ 145:Core/Src/game_control.c ****     uint8_t shape_width = sel_shape->width;
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 18
+
+
+ 777              		.loc 1 145 5 is_stmt 1 view .LVU219
+ 778              		.loc 1 145 13 is_stmt 0 view .LVU220
+ 779 0012 0579     		ldrb	r5, [r0, #4]
+ 780              	.LVL78:
+ 146:Core/Src/game_control.c ****     
+ 147:Core/Src/game_control.c **** 
+ 148:Core/Src/game_control.c ****     uint16_t index = rand() % (MAX_COLUMNS - shape_width);
+ 781              		.loc 1 148 5 is_stmt 1 view .LVU221
+ 782              		.loc 1 148 22 is_stmt 0 view .LVU222
+ 783 0014 FFF7FEFF 		bl	rand
+ 784              	.LVL79:
+ 785              		.loc 1 148 44 view .LVU223
+ 786 0018 2C00     		movs	r4, r5
+ 787 001a 0521     		movs	r1, #5
+ 788 001c 491B     		subs	r1, r1, r5
+ 789              		.loc 1 148 29 view .LVU224
+ 790 001e FFF7FEFF 		bl	__aeabi_idivmod
+ 791              	.LVL80:
+ 149:Core/Src/game_control.c **** 
+ 150:Core/Src/game_control.c ****     for(int16_t i=0; i<STAGE_SIZE; i++){
+ 792              		.loc 1 150 5 is_stmt 1 view .LVU225
+ 793              	.LBB17:
+ 794              		.loc 1 150 9 view .LVU226
+ 795              		.loc 1 150 17 is_stmt 0 view .LVU227
+ 796 0022 0020     		movs	r0, #0
+ 797              		.loc 1 150 5 view .LVU228
+ 798 0024 1EE0     		b	.L52
+ 799              	.LVL81:
+ 800              	.L53:
+ 801              	.LBB18:
+ 151:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+ 802              		.loc 1 151 42 is_stmt 1 discriminator 2 view .LVU229
+ 803 0026 0133     		adds	r3, r3, #1
+ 804              	.LVL82:
+ 805              		.loc 1 151 42 is_stmt 0 discriminator 2 view .LVU230
+ 806 0028 1BB2     		sxth	r3, r3
+ 807              	.LVL83:
+ 808              	.L55:
+ 809              		.loc 1 151 27 is_stmt 1 discriminator 1 view .LVU231
+ 810 002a 042B     		cmp	r3, #4
+ 811 002c 18DC     		bgt	.L57
+ 152:Core/Src/game_control.c ****             if((j >= index) && (j-index < shape_width)){
+ 812              		.loc 1 152 13 view .LVU232
+ 813 002e 0A04     		lsls	r2, r1, #16
+ 814 0030 120C     		lsrs	r2, r2, #16
+ 815              		.loc 1 152 15 is_stmt 0 view .LVU233
+ 816 0032 9342     		cmp	r3, r2
+ 817 0034 F7DB     		blt	.L53
+ 818              		.loc 1 152 34 discriminator 1 view .LVU234
+ 819 0036 9E1A     		subs	r6, r3, r2
+ 820              		.loc 1 152 29 discriminator 1 view .LVU235
+ 821 0038 B442     		cmp	r4, r6
+ 822 003a F4DD     		ble	.L53
+ 153:Core/Src/game_control.c ****                 *(play_field+i*MAX_COLUMNS+j) = *(shape_data+i*shape_width+j-index);
+ 823              		.loc 1 153 17 is_stmt 1 view .LVU236
+ 824              		.loc 1 153 63 is_stmt 0 view .LVU237
+ 825 003c 0600     		movs	r6, r0
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 19
+
+
+ 826 003e 6E43     		muls	r6, r5
+ 827 0040 B446     		mov	ip, r6
+ 828              		.loc 1 153 75 view .LVU238
+ 829 0042 9C44     		add	ip, ip, r3
+ 830              		.loc 1 153 77 view .LVU239
+ 831 0044 6646     		mov	r6, ip
+ 832 0046 B21A     		subs	r2, r6, r2
+ 833 0048 9446     		mov	ip, r2
+ 834              		.loc 1 153 31 view .LVU240
+ 835 004a 8200     		lsls	r2, r0, #2
+ 836 004c 1218     		adds	r2, r2, r0
+ 837              		.loc 1 153 43 view .LVU241
+ 838 004e 9A18     		adds	r2, r3, r2
+ 839              		.loc 1 153 49 view .LVU242
+ 840 0050 6646     		mov	r6, ip
+ 841 0052 4F46     		mov	r7, r9
+ 842 0054 BE5D     		ldrb	r6, [r7, r6]
+ 843 0056 B446     		mov	ip, r6
+ 844              		.loc 1 153 47 view .LVU243
+ 845 0058 4646     		mov	r6, r8
+ 846 005a 6746     		mov	r7, ip
+ 847 005c B754     		strb	r7, [r6, r2]
+ 848 005e E2E7     		b	.L53
+ 849              	.L57:
+ 850              		.loc 1 153 47 view .LVU244
+ 851              	.LBE18:
+ 150:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+ 852              		.loc 1 150 37 is_stmt 1 discriminator 2 view .LVU245
+ 853 0060 0130     		adds	r0, r0, #1
+ 854              	.LVL84:
+ 150:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+ 855              		.loc 1 150 37 is_stmt 0 discriminator 2 view .LVU246
+ 856 0062 00B2     		sxth	r0, r0
+ 857              	.LVL85:
+ 858              	.L52:
+ 150:Core/Src/game_control.c ****         for(int16_t j=0; j<MAX_COLUMNS; j++){
+ 859              		.loc 1 150 23 is_stmt 1 discriminator 1 view .LVU247
+ 860 0064 0328     		cmp	r0, #3
+ 861 0066 01DC     		bgt	.L58
+ 862              	.LBB19:
+ 151:Core/Src/game_control.c ****             if((j >= index) && (j-index < shape_width)){
+ 863              		.loc 1 151 21 is_stmt 0 view .LVU248
+ 864 0068 0023     		movs	r3, #0
+ 865 006a DEE7     		b	.L55
+ 866              	.L58:
+ 867              	.LBE19:
+ 868              	.LBE17:
+ 154:Core/Src/game_control.c ****             }
+ 155:Core/Src/game_control.c ****         }
+ 156:Core/Src/game_control.c ****     }
+ 157:Core/Src/game_control.c **** 
+ 158:Core/Src/game_control.c ****     return 0;
+ 869              		.loc 1 158 5 is_stmt 1 view .LVU249
+ 159:Core/Src/game_control.c **** }
+ 870              		.loc 1 159 1 is_stmt 0 view .LVU250
+ 871 006c 0020     		movs	r0, #0
+ 872              	.LVL86:
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 20
+
+
+ 873              		.loc 1 159 1 view .LVU251
+ 874              		@ sp needed
+ 875              	.LVL87:
+ 876              	.LVL88:
+ 877              	.LVL89:
+ 878              		.loc 1 159 1 view .LVU252
+ 879 006e C0BC     		pop	{r6, r7}
+ 880 0070 B946     		mov	r9, r7
+ 881 0072 B046     		mov	r8, r6
+ 882 0074 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 883              		.cfi_endproc
+ 884              	.LFE10:
+ 886              		.section	.rodata.printGame.str1.4,"aMS",%progbits,1
+ 887              		.align	2
+ 888              	.LC9:
+ 889 0000 2D2D00   		.ascii	"--\000"
+ 890 0003 00       		.align	2
+ 891              	.LC11:
+ 892 0004 25632000 		.ascii	"%c \000"
+ 893              		.section	.text.printGame,"ax",%progbits
+ 894              		.align	1
+ 895              		.global	printGame
+ 896              		.syntax unified
+ 897              		.code	16
+ 898              		.thumb_func
+ 900              	printGame:
+ 901              	.LVL90:
+ 902              	.LFB11:
+ 160:Core/Src/game_control.c **** 
+ 161:Core/Src/game_control.c **** 
+ 162:Core/Src/game_control.c **** uint8_t printGame(char *play_field, enum_ShowSelect_Type type){
+ 903              		.loc 1 162 63 is_stmt 1 view -0
+ 904              		.cfi_startproc
+ 905              		@ args = 0, pretend = 0, frame = 0
+ 906              		@ frame_needed = 0, uses_anonymous_args = 0
+ 907              		.loc 1 162 63 is_stmt 0 view .LVU254
+ 908 0000 70B5     		push	{r4, r5, r6, lr}
+ 909              		.cfi_def_cfa_offset 16
+ 910              		.cfi_offset 4, -16
+ 911              		.cfi_offset 5, -12
+ 912              		.cfi_offset 6, -8
+ 913              		.cfi_offset 14, -4
+ 914 0002 0600     		movs	r6, r0
+ 163:Core/Src/game_control.c ****     uint8_t print_start = 0; 
+ 915              		.loc 1 163 5 is_stmt 1 view .LVU255
+ 916              	.LVL91:
+ 164:Core/Src/game_control.c ****     if(type == NO_STAGE_GAME)print_start = (STAGE_SIZE-1);
+ 917              		.loc 1 164 5 view .LVU256
+ 918              		.loc 1 164 7 is_stmt 0 view .LVU257
+ 919 0004 0029     		cmp	r1, #0
+ 920 0006 02D0     		beq	.L69
+ 163:Core/Src/game_control.c ****     uint8_t print_start = 0; 
+ 921              		.loc 1 163 13 view .LVU258
+ 922 0008 0025     		movs	r5, #0
+ 923              	.L60:
+ 924              	.LVL92:
+ 165:Core/Src/game_control.c **** 
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 21
+
+
+ 166:Core/Src/game_control.c ****     #ifdef ERASE_SCREEN
+ 167:Core/Src/game_control.c ****         printf("%c%c%c%c",0x1B,0x5B,0x32,0x4A);
+ 168:Core/Src/game_control.c ****     #endif
+ 169:Core/Src/game_control.c ****     for(uint8_t r=0;r<MAX_COLUMNS;r++)printf("--");
+ 925              		.loc 1 169 5 is_stmt 1 view .LVU259
+ 926              	.LBB20:
+ 927              		.loc 1 169 9 view .LVU260
+ 928              		.loc 1 169 17 is_stmt 0 view .LVU261
+ 929 000a 0024     		movs	r4, #0
+ 930              		.loc 1 169 5 view .LVU262
+ 931 000c 06E0     		b	.L61
+ 932              	.LVL93:
+ 933              	.L69:
+ 934              		.loc 1 169 5 view .LVU263
+ 935              	.LBE20:
+ 164:Core/Src/game_control.c ****     if(type == NO_STAGE_GAME)print_start = (STAGE_SIZE-1);
+ 936              		.loc 1 164 42 view .LVU264
+ 937 000e 0325     		movs	r5, #3
+ 938 0010 FBE7     		b	.L60
+ 939              	.LVL94:
+ 940              	.L62:
+ 941              	.LBB21:
+ 942              		.loc 1 169 39 is_stmt 1 discriminator 3 view .LVU265
+ 943 0012 1948     		ldr	r0, .L71
+ 944 0014 FFF7FEFF 		bl	printf
+ 945              	.LVL95:
+ 946              		.loc 1 169 36 discriminator 3 view .LVU266
+ 947 0018 0134     		adds	r4, r4, #1
+ 948              	.LVL96:
+ 949              		.loc 1 169 36 is_stmt 0 discriminator 3 view .LVU267
+ 950 001a E4B2     		uxtb	r4, r4
+ 951              	.LVL97:
+ 952              	.L61:
+ 953              		.loc 1 169 22 is_stmt 1 discriminator 1 view .LVU268
+ 954 001c 042C     		cmp	r4, #4
+ 955 001e F8D9     		bls	.L62
+ 956              	.LBE21:
+ 170:Core/Src/game_control.c ****     printf("\n");
+ 957              		.loc 1 170 5 view .LVU269
+ 958 0020 0A20     		movs	r0, #10
+ 959 0022 FFF7FEFF 		bl	putchar
+ 960              	.LVL98:
+ 171:Core/Src/game_control.c **** 
+ 172:Core/Src/game_control.c ****     for(uint16_t i=print_start; i<MAX_ROWS; i++){
+ 961              		.loc 1 172 5 view .LVU270
+ 962              	.LBB22:
+ 963              		.loc 1 172 9 view .LVU271
+ 964              		.loc 1 172 5 is_stmt 0 view .LVU272
+ 965 0026 12E0     		b	.L63
+ 966              	.LVL99:
+ 967              	.L65:
+ 968              	.LBB23:
+ 173:Core/Src/game_control.c ****         printf("|");
+ 174:Core/Src/game_control.c ****         for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 175:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ 969              		.loc 1 175 13 is_stmt 1 discriminator 3 view .LVU273
+ 970              		.loc 1 175 43 is_stmt 0 discriminator 3 view .LVU274
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 22
+
+
+ 971 0028 AB00     		lsls	r3, r5, #2
+ 972 002a 5B19     		adds	r3, r3, r5
+ 973              		.loc 1 175 56 discriminator 3 view .LVU275
+ 974 002c E318     		adds	r3, r4, r3
+ 975              		.loc 1 175 27 discriminator 3 view .LVU276
+ 976 002e F15C     		ldrb	r1, [r6, r3]
+ 977              		.loc 1 175 13 discriminator 3 view .LVU277
+ 978 0030 1248     		ldr	r0, .L71+4
+ 979 0032 FFF7FEFF 		bl	printf
+ 980              	.LVL100:
+ 174:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ 981              		.loc 1 174 43 is_stmt 1 discriminator 3 view .LVU278
+ 982 0036 0134     		adds	r4, r4, #1
+ 983              	.LVL101:
+ 174:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ 984              		.loc 1 174 43 is_stmt 0 discriminator 3 view .LVU279
+ 985 0038 A4B2     		uxth	r4, r4
+ 986              	.LVL102:
+ 987              	.L64:
+ 174:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ 988              		.loc 1 174 28 is_stmt 1 discriminator 1 view .LVU280
+ 989 003a 042C     		cmp	r4, #4
+ 990 003c F4D9     		bls	.L65
+ 991              	.LBE23:
+ 176:Core/Src/game_control.c ****         }
+ 177:Core/Src/game_control.c ****         printf("|");
+ 992              		.loc 1 177 9 discriminator 2 view .LVU281
+ 993 003e 7C20     		movs	r0, #124
+ 994 0040 FFF7FEFF 		bl	putchar
+ 995              	.LVL103:
+ 178:Core/Src/game_control.c ****         printf("\n");
+ 996              		.loc 1 178 9 discriminator 2 view .LVU282
+ 997 0044 0A20     		movs	r0, #10
+ 998 0046 FFF7FEFF 		bl	putchar
+ 999              	.LVL104:
+ 172:Core/Src/game_control.c ****         printf("|");
+ 1000              		.loc 1 172 46 discriminator 2 view .LVU283
+ 1001 004a 0135     		adds	r5, r5, #1
+ 1002              	.LVL105:
+ 172:Core/Src/game_control.c ****         printf("|");
+ 1003              		.loc 1 172 46 is_stmt 0 discriminator 2 view .LVU284
+ 1004 004c ADB2     		uxth	r5, r5
+ 1005              	.LVL106:
+ 1006              	.L63:
+ 172:Core/Src/game_control.c ****         printf("|");
+ 1007              		.loc 1 172 34 is_stmt 1 discriminator 1 view .LVU285
+ 1008 004e 0D2D     		cmp	r5, #13
+ 1009 0050 04D8     		bhi	.L70
+ 173:Core/Src/game_control.c ****         for(uint16_t j=0; j<MAX_COLUMNS; j++){
+ 1010              		.loc 1 173 9 view .LVU286
+ 1011 0052 7C20     		movs	r0, #124
+ 1012 0054 FFF7FEFF 		bl	putchar
+ 1013              	.LVL107:
+ 174:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ 1014              		.loc 1 174 9 view .LVU287
+ 1015              	.LBB24:
+ 174:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 23
+
+
+ 1016              		.loc 1 174 13 view .LVU288
+ 174:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ 1017              		.loc 1 174 22 is_stmt 0 view .LVU289
+ 1018 0058 0024     		movs	r4, #0
+ 174:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ 1019              		.loc 1 174 9 view .LVU290
+ 1020 005a EEE7     		b	.L64
+ 1021              	.LVL108:
+ 1022              	.L70:
+ 174:Core/Src/game_control.c ****             printf("%c ", *(play_field + i*MAX_COLUMNS + j));
+ 1023              		.loc 1 174 9 view .LVU291
+ 1024              	.LBE24:
+ 1025              	.LBE22:
+ 1026              	.LBB25:
+ 179:Core/Src/game_control.c ****     }
+ 180:Core/Src/game_control.c **** 
+ 181:Core/Src/game_control.c ****     for(uint8_t r=0;r<MAX_COLUMNS;r++)printf("--");
+ 1027              		.loc 1 181 17 view .LVU292
+ 1028 005c 0024     		movs	r4, #0
+ 1029 005e 04E0     		b	.L67
+ 1030              	.LVL109:
+ 1031              	.L68:
+ 1032              		.loc 1 181 39 is_stmt 1 discriminator 3 view .LVU293
+ 1033 0060 0548     		ldr	r0, .L71
+ 1034 0062 FFF7FEFF 		bl	printf
+ 1035              	.LVL110:
+ 1036              		.loc 1 181 36 discriminator 3 view .LVU294
+ 1037 0066 0134     		adds	r4, r4, #1
+ 1038              	.LVL111:
+ 1039              		.loc 1 181 36 is_stmt 0 discriminator 3 view .LVU295
+ 1040 0068 E4B2     		uxtb	r4, r4
+ 1041              	.LVL112:
+ 1042              	.L67:
+ 1043              		.loc 1 181 22 is_stmt 1 discriminator 1 view .LVU296
+ 1044 006a 042C     		cmp	r4, #4
+ 1045 006c F8D9     		bls	.L68
+ 1046              	.LBE25:
+ 182:Core/Src/game_control.c ****     printf("\n");
+ 1047              		.loc 1 182 5 view .LVU297
+ 1048 006e 0A20     		movs	r0, #10
+ 1049 0070 FFF7FEFF 		bl	putchar
+ 1050              	.LVL113:
+ 183:Core/Src/game_control.c **** 
+ 184:Core/Src/game_control.c ****     return 0;
+ 1051              		.loc 1 184 5 view .LVU298
+ 185:Core/Src/game_control.c **** 
+ 186:Core/Src/game_control.c **** }
+ 1052              		.loc 1 186 1 is_stmt 0 view .LVU299
+ 1053 0074 0020     		movs	r0, #0
+ 1054              		@ sp needed
+ 1055              	.LVL114:
+ 1056              	.LVL115:
+ 1057              	.LVL116:
+ 1058              		.loc 1 186 1 view .LVU300
+ 1059 0076 70BD     		pop	{r4, r5, r6, pc}
+ 1060              	.L72:
+ 1061              		.align	2
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 24
+
+
+ 1062              	.L71:
+ 1063 0078 00000000 		.word	.LC9
+ 1064 007c 04000000 		.word	.LC11
+ 1065              		.cfi_endproc
+ 1066              	.LFE11:
+ 1068              		.section	.text.printField,"ax",%progbits
+ 1069              		.align	1
+ 1070              		.global	printField
+ 1071              		.syntax unified
+ 1072              		.code	16
+ 1073              		.thumb_func
+ 1075              	printField:
+ 1076              	.LVL117:
+ 1077              	.LFB12:
+ 187:Core/Src/game_control.c **** 
+ 188:Core/Src/game_control.c **** 
+ 189:Core/Src/game_control.c **** uint8_t printField(char *play_field){
+ 1078              		.loc 1 189 37 is_stmt 1 view -0
+ 1079              		.cfi_startproc
+ 1080              		@ args = 0, pretend = 0, frame = 0
+ 1081              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1082              		.loc 1 189 37 is_stmt 0 view .LVU302
+ 1083 0000 10B5     		push	{r4, lr}
+ 1084              		.cfi_def_cfa_offset 8
+ 1085              		.cfi_offset 4, -8
+ 1086              		.cfi_offset 14, -4
+ 190:Core/Src/game_control.c ****     printGame(play_field, NO_STAGE_GAME);
+ 1087              		.loc 1 190 5 is_stmt 1 view .LVU303
+ 1088 0002 0021     		movs	r1, #0
+ 1089 0004 FFF7FEFF 		bl	printGame
+ 1090              	.LVL118:
+ 191:Core/Src/game_control.c ****     return 0;
+ 1091              		.loc 1 191 5 view .LVU304
+ 192:Core/Src/game_control.c **** }
+ 1092              		.loc 1 192 1 is_stmt 0 view .LVU305
+ 1093 0008 0020     		movs	r0, #0
+ 1094              		@ sp needed
+ 1095 000a 10BD     		pop	{r4, pc}
+ 1096              		.cfi_endproc
+ 1097              	.LFE12:
+ 1099              		.section	.text.printFullField,"ax",%progbits
+ 1100              		.align	1
+ 1101              		.global	printFullField
+ 1102              		.syntax unified
+ 1103              		.code	16
+ 1104              		.thumb_func
+ 1106              	printFullField:
+ 1107              	.LVL119:
+ 1108              	.LFB13:
+ 193:Core/Src/game_control.c **** 
+ 194:Core/Src/game_control.c **** uint8_t printFullField(char *play_field){
+ 1109              		.loc 1 194 41 is_stmt 1 view -0
+ 1110              		.cfi_startproc
+ 1111              		@ args = 0, pretend = 0, frame = 0
+ 1112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1113              		.loc 1 194 41 is_stmt 0 view .LVU307
+ 1114 0000 10B5     		push	{r4, lr}
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 25
+
+
+ 1115              		.cfi_def_cfa_offset 8
+ 1116              		.cfi_offset 4, -8
+ 1117              		.cfi_offset 14, -4
+ 195:Core/Src/game_control.c ****     printGame(play_field, FULL_GAME);
+ 1118              		.loc 1 195 5 is_stmt 1 view .LVU308
+ 1119 0002 0121     		movs	r1, #1
+ 1120 0004 FFF7FEFF 		bl	printGame
+ 1121              	.LVL120:
+ 196:Core/Src/game_control.c ****     return 0;
+ 1122              		.loc 1 196 5 view .LVU309
+ 197:Core/Src/game_control.c **** }
+ 1123              		.loc 1 197 1 is_stmt 0 view .LVU310
+ 1124 0008 0020     		movs	r0, #0
+ 1125              		@ sp needed
+ 1126 000a 10BD     		pop	{r4, pc}
+ 1127              		.cfi_endproc
+ 1128              	.LFE13:
+ 1130              		.section	.text.removeRow,"ax",%progbits
+ 1131              		.align	1
+ 1132              		.global	removeRow
+ 1133              		.syntax unified
+ 1134              		.code	16
+ 1135              		.thumb_func
+ 1137              	removeRow:
+ 1138              	.LVL121:
+ 1139              	.LFB14:
+ 198:Core/Src/game_control.c **** 
+ 199:Core/Src/game_control.c **** 
+ 200:Core/Src/game_control.c **** uint8_t removeRow(char *play_field, uint8_t row_idx){
+ 1140              		.loc 1 200 53 is_stmt 1 view -0
+ 1141              		.cfi_startproc
+ 1142              		@ args = 0, pretend = 0, frame = 0
+ 1143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1144              		.loc 1 200 53 is_stmt 0 view .LVU312
+ 1145 0000 10B5     		push	{r4, lr}
+ 1146              		.cfi_def_cfa_offset 8
+ 1147              		.cfi_offset 4, -8
+ 1148              		.cfi_offset 14, -4
+ 201:Core/Src/game_control.c ****     for(uint8_t i=row_idx;i > 0; i--){
+ 1149              		.loc 1 201 5 is_stmt 1 view .LVU313
+ 1150              	.LBB26:
+ 1151              		.loc 1 201 9 view .LVU314
+ 1152              	.LVL122:
+ 1153              		.loc 1 201 5 is_stmt 0 view .LVU315
+ 1154 0002 0EE0     		b	.L76
+ 1155              	.LVL123:
+ 1156              	.L77:
+ 1157              	.LBB27:
+ 202:Core/Src/game_control.c ****         for(uint8_t j=0;j < MAX_COLUMNS;j++){
+ 203:Core/Src/game_control.c ****             *(play_field +i*MAX_COLUMNS+j) = *(play_field +(i-1)*MAX_COLUMNS+j);
+ 1158              		.loc 1 203 13 is_stmt 1 discriminator 3 view .LVU316
+ 1159              		.loc 1 203 62 is_stmt 0 discriminator 3 view .LVU317
+ 1160 0004 4A1E     		subs	r2, r1, #1
+ 1161              		.loc 1 203 65 discriminator 3 view .LVU318
+ 1162 0006 9400     		lsls	r4, r2, #2
+ 1163 0008 A418     		adds	r4, r4, r2
+ 1164              		.loc 1 203 77 discriminator 3 view .LVU319
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 26
+
+
+ 1165 000a E418     		adds	r4, r4, r3
+ 1166              		.loc 1 203 28 discriminator 3 view .LVU320
+ 1167 000c 8A00     		lsls	r2, r1, #2
+ 1168 000e 5218     		adds	r2, r2, r1
+ 1169              		.loc 1 203 40 discriminator 3 view .LVU321
+ 1170 0010 9A18     		adds	r2, r3, r2
+ 1171              		.loc 1 203 46 discriminator 3 view .LVU322
+ 1172 0012 045D     		ldrb	r4, [r0, r4]
+ 1173              		.loc 1 203 44 discriminator 3 view .LVU323
+ 1174 0014 8454     		strb	r4, [r0, r2]
+ 202:Core/Src/game_control.c ****         for(uint8_t j=0;j < MAX_COLUMNS;j++){
+ 1175              		.loc 1 202 42 is_stmt 1 discriminator 3 view .LVU324
+ 1176 0016 0133     		adds	r3, r3, #1
+ 1177              	.LVL124:
+ 202:Core/Src/game_control.c ****         for(uint8_t j=0;j < MAX_COLUMNS;j++){
+ 1178              		.loc 1 202 42 is_stmt 0 discriminator 3 view .LVU325
+ 1179 0018 DBB2     		uxtb	r3, r3
+ 1180              	.LVL125:
+ 1181              	.L78:
+ 202:Core/Src/game_control.c ****         for(uint8_t j=0;j < MAX_COLUMNS;j++){
+ 1182              		.loc 1 202 27 is_stmt 1 discriminator 1 view .LVU326
+ 1183 001a 042B     		cmp	r3, #4
+ 1184 001c F2D9     		bls	.L77
+ 1185              	.LBE27:
+ 201:Core/Src/game_control.c ****     for(uint8_t i=row_idx;i > 0; i--){
+ 1186              		.loc 1 201 35 discriminator 2 view .LVU327
+ 1187 001e 0139     		subs	r1, r1, #1
+ 1188              	.LVL126:
+ 201:Core/Src/game_control.c ****     for(uint8_t i=row_idx;i > 0; i--){
+ 1189              		.loc 1 201 35 is_stmt 0 discriminator 2 view .LVU328
+ 1190 0020 C9B2     		uxtb	r1, r1
+ 1191              	.LVL127:
+ 1192              	.L76:
+ 201:Core/Src/game_control.c ****     for(uint8_t i=row_idx;i > 0; i--){
+ 1193              		.loc 1 201 29 is_stmt 1 discriminator 1 view .LVU329
+ 1194 0022 0029     		cmp	r1, #0
+ 1195 0024 01D0     		beq	.L80
+ 1196              	.LBB28:
+ 202:Core/Src/game_control.c ****         for(uint8_t j=0;j < MAX_COLUMNS;j++){
+ 1197              		.loc 1 202 21 is_stmt 0 view .LVU330
+ 1198 0026 0023     		movs	r3, #0
+ 1199 0028 F7E7     		b	.L78
+ 1200              	.L80:
+ 1201              	.LBE28:
+ 1202              	.LBE26:
+ 204:Core/Src/game_control.c ****         }
+ 205:Core/Src/game_control.c ****     }
+ 206:Core/Src/game_control.c **** 
+ 207:Core/Src/game_control.c ****     return 0;
+ 1203              		.loc 1 207 5 is_stmt 1 view .LVU331
+ 208:Core/Src/game_control.c **** }
+ 1204              		.loc 1 208 1 is_stmt 0 view .LVU332
+ 1205 002a 0020     		movs	r0, #0
+ 1206              	.LVL128:
+ 1207              		.loc 1 208 1 view .LVU333
+ 1208              		@ sp needed
+ 1209 002c 10BD     		pop	{r4, pc}
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 27
+
+
+ 1210              		.cfi_endproc
+ 1211              	.LFE14:
+ 1213              		.section	.text.score,"ax",%progbits
+ 1214              		.align	1
+ 1215              		.global	score
+ 1216              		.syntax unified
+ 1217              		.code	16
+ 1218              		.thumb_func
+ 1220              	score:
+ 1221              	.LVL129:
+ 1222              	.LFB15:
+ 209:Core/Src/game_control.c **** 
+ 210:Core/Src/game_control.c **** uint16_t score(enum_Score_Type op){
+ 1223              		.loc 1 210 35 is_stmt 1 view -0
+ 1224              		.cfi_startproc
+ 1225              		@ args = 0, pretend = 0, frame = 0
+ 1226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1227              		@ link register save eliminated.
+ 211:Core/Src/game_control.c ****     static uint16_t score = 0;
+ 1228              		.loc 1 211 5 view .LVU335
+ 212:Core/Src/game_control.c **** 
+ 213:Core/Src/game_control.c ****     score += (op*MAX_COLUMNS);
+ 1229              		.loc 1 213 5 view .LVU336
+ 1230              		.loc 1 213 11 is_stmt 0 view .LVU337
+ 1231 0000 8300     		lsls	r3, r0, #2
+ 1232 0002 C018     		adds	r0, r0, r3
+ 1233              	.LVL130:
+ 1234              		.loc 1 213 11 view .LVU338
+ 1235 0004 024B     		ldr	r3, .L82
+ 1236 0006 1A88     		ldrh	r2, [r3]
+ 1237 0008 8018     		adds	r0, r0, r2
+ 1238 000a 80B2     		uxth	r0, r0
+ 1239 000c 1880     		strh	r0, [r3]
+ 214:Core/Src/game_control.c ****     return score;
+ 1240              		.loc 1 214 5 is_stmt 1 view .LVU339
+ 215:Core/Src/game_control.c **** }
+ 1241              		.loc 1 215 1 is_stmt 0 view .LVU340
+ 1242              		@ sp needed
+ 1243 000e 7047     		bx	lr
+ 1244              	.L83:
+ 1245              		.align	2
+ 1246              	.L82:
+ 1247 0010 00000000 		.word	score.0
+ 1248              		.cfi_endproc
+ 1249              	.LFE15:
+ 1251              		.section	.text.checkFullRow,"ax",%progbits
+ 1252              		.align	1
+ 1253              		.global	checkFullRow
+ 1254              		.syntax unified
+ 1255              		.code	16
+ 1256              		.thumb_func
+ 1258              	checkFullRow:
+ 1259              	.LVL131:
+ 1260              	.LFB16:
+ 216:Core/Src/game_control.c **** 
+ 217:Core/Src/game_control.c **** uint8_t checkFullRow(char *play_field){
+ 1261              		.loc 1 217 39 is_stmt 1 view -0
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 28
+
+
+ 1262              		.cfi_startproc
+ 1263              		@ args = 0, pretend = 0, frame = 0
+ 1264              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1265              		.loc 1 217 39 is_stmt 0 view .LVU342
+ 1266 0000 70B5     		push	{r4, r5, r6, lr}
+ 1267              		.cfi_def_cfa_offset 16
+ 1268              		.cfi_offset 4, -16
+ 1269              		.cfi_offset 5, -12
+ 1270              		.cfi_offset 6, -8
+ 1271              		.cfi_offset 14, -4
+ 1272 0002 0400     		movs	r4, r0
+ 218:Core/Src/game_control.c ****     uint8_t full_row;
+ 1273              		.loc 1 218 5 is_stmt 1 view .LVU343
+ 219:Core/Src/game_control.c ****     
+ 220:Core/Src/game_control.c ****     for(uint8_t i=0;i<MAX_ROWS;i++){
+ 1274              		.loc 1 220 5 view .LVU344
+ 1275              	.LBB29:
+ 1276              		.loc 1 220 9 view .LVU345
+ 1277              	.LVL132:
+ 1278              		.loc 1 220 17 is_stmt 0 view .LVU346
+ 1279 0004 0021     		movs	r1, #0
+ 1280              		.loc 1 220 5 view .LVU347
+ 1281 0006 0FE0     		b	.L85
+ 1282              	.LVL133:
+ 1283              	.L86:
+ 1284              	.LBB30:
+ 221:Core/Src/game_control.c ****         full_row = 1;
+ 222:Core/Src/game_control.c ****         for(uint8_t j=0;j<MAX_COLUMNS;j++){
+ 1285              		.loc 1 222 40 is_stmt 1 discriminator 2 view .LVU348
+ 1286 0008 0133     		adds	r3, r3, #1
+ 1287              	.LVL134:
+ 1288              		.loc 1 222 40 is_stmt 0 discriminator 2 view .LVU349
+ 1289 000a DBB2     		uxtb	r3, r3
+ 1290              	.LVL135:
+ 1291              	.L90:
+ 1292              		.loc 1 222 26 is_stmt 1 discriminator 1 view .LVU350
+ 1293 000c 042B     		cmp	r3, #4
+ 1294 000e 07D8     		bhi	.L93
+ 223:Core/Src/game_control.c ****             if(*(play_field +i*MAX_COLUMNS+j) != DEAD_SYMBOL){
+ 1295              		.loc 1 223 13 view .LVU351
+ 1296              		.loc 1 223 31 is_stmt 0 view .LVU352
+ 1297 0010 8A00     		lsls	r2, r1, #2
+ 1298 0012 5218     		adds	r2, r2, r1
+ 1299              		.loc 1 223 43 view .LVU353
+ 1300 0014 9A18     		adds	r2, r3, r2
+ 1301              		.loc 1 223 16 view .LVU354
+ 1302 0016 A25C     		ldrb	r2, [r4, r2]
+ 1303              		.loc 1 223 15 view .LVU355
+ 1304 0018 582A     		cmp	r2, #88
+ 1305 001a F5D0     		beq	.L86
+ 224:Core/Src/game_control.c ****                 full_row = 0; 
+ 1306              		.loc 1 224 26 view .LVU356
+ 1307 001c 0025     		movs	r5, #0
+ 1308              	.LVL136:
+ 1309              		.loc 1 224 26 view .LVU357
+ 1310 001e F3E7     		b	.L86
+ 1311              	.LVL137:
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 29
+
+
+ 1312              	.L93:
+ 1313              		.loc 1 224 26 view .LVU358
+ 1314              	.LBE30:
+ 225:Core/Src/game_control.c ****             }
+ 226:Core/Src/game_control.c ****         }
+ 227:Core/Src/game_control.c **** 
+ 228:Core/Src/game_control.c ****         if(full_row){
+ 1315              		.loc 1 228 9 is_stmt 1 view .LVU359
+ 1316              		.loc 1 228 11 is_stmt 0 view .LVU360
+ 1317 0020 002D     		cmp	r5, #0
+ 1318 0022 06D1     		bne	.L94
+ 220:Core/Src/game_control.c ****         full_row = 1;
+ 1319              		.loc 1 220 33 is_stmt 1 discriminator 2 view .LVU361
+ 1320 0024 0131     		adds	r1, r1, #1
+ 1321              	.LVL138:
+ 220:Core/Src/game_control.c ****         full_row = 1;
+ 1322              		.loc 1 220 33 is_stmt 0 discriminator 2 view .LVU362
+ 1323 0026 C9B2     		uxtb	r1, r1
+ 1324              	.LVL139:
+ 1325              	.L85:
+ 220:Core/Src/game_control.c ****         full_row = 1;
+ 1326              		.loc 1 220 22 is_stmt 1 discriminator 1 view .LVU363
+ 1327 0028 0D29     		cmp	r1, #13
+ 1328 002a 0CD8     		bhi	.L95
+ 1329              	.LBB31:
+ 222:Core/Src/game_control.c ****             if(*(play_field +i*MAX_COLUMNS+j) != DEAD_SYMBOL){
+ 1330              		.loc 1 222 21 is_stmt 0 view .LVU364
+ 1331 002c 0023     		movs	r3, #0
+ 1332              	.LBE31:
+ 221:Core/Src/game_control.c ****         for(uint8_t j=0;j<MAX_COLUMNS;j++){
+ 1333              		.loc 1 221 18 view .LVU365
+ 1334 002e 0125     		movs	r5, #1
+ 1335 0030 ECE7     		b	.L90
+ 1336              	.LVL140:
+ 1337              	.L94:
+ 229:Core/Src/game_control.c ****             removeRow(play_field, i);
+ 1338              		.loc 1 229 13 is_stmt 1 view .LVU366
+ 1339 0032 2000     		movs	r0, r4
+ 1340              	.LVL141:
+ 1341              		.loc 1 229 13 is_stmt 0 view .LVU367
+ 1342 0034 FFF7FEFF 		bl	removeRow
+ 1343              	.LVL142:
+ 230:Core/Src/game_control.c ****             score(INC_SCORE);
+ 1344              		.loc 1 230 13 is_stmt 1 view .LVU368
+ 1345 0038 0120     		movs	r0, #1
+ 1346 003a FFF7FEFF 		bl	score
+ 1347              	.LVL143:
+ 231:Core/Src/game_control.c ****             checkFullRow(play_field);
+ 1348              		.loc 1 231 13 view .LVU369
+ 1349 003e 2000     		movs	r0, r4
+ 1350 0040 FFF7FEFF 		bl	checkFullRow
+ 1351              	.LVL144:
+ 232:Core/Src/game_control.c ****             return SCORED;
+ 1352              		.loc 1 232 13 view .LVU370
+ 1353              		.loc 1 232 20 is_stmt 0 view .LVU371
+ 1354 0044 00E0     		b	.L89
+ 1355              	.LVL145:
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 30
+
+
+ 1356              	.L95:
+ 1357              		.loc 1 232 20 view .LVU372
+ 1358              	.LBE29:
+ 233:Core/Src/game_control.c ****         }
+ 234:Core/Src/game_control.c ****     }
+ 235:Core/Src/game_control.c **** 
+ 236:Core/Src/game_control.c ****     return NOT_SCORED;
+ 1359              		.loc 1 236 12 view .LVU373
+ 1360 0046 0025     		movs	r5, #0
+ 1361              	.LVL146:
+ 1362              	.L89:
+ 237:Core/Src/game_control.c **** }...
+ 1363              		.loc 1 237 1 view .LVU374
+ 1364 0048 2800     		movs	r0, r5
+ 1365              		@ sp needed
+ 1366              	.LVL147:
+ 1367              		.loc 1 237 1 view .LVU375
+ 1368 004a 70BD     		pop	{r4, r5, r6, pc}
+ 1369              		.cfi_endproc
+ 1370              	.LFE16:
+ 1372              		.section	.bss.score.0,"aw",%nobits
+ 1373              		.align	1
+ 1376              	score.0:
+ 1377 0000 0000     		.space	2
+ 1378              		.section	.bss.shape_data.1,"aw",%nobits
+ 1379              		.align	2
+ 1382              	shape_data.1:
+ 1383 0000 00000000 		.space	8
+ 1383      00000000 
+ 1384              		.global	S_BLOCK_DATA
+ 1385              		.section	.rodata.S_BLOCK_DATA,"a"
+ 1386              		.align	2
+ 1389              	S_BLOCK_DATA:
+ 1390 0000 20232323 		.ascii	" ####   "
+ 1390      23202020 
+ 1391              		.global	Z_BLOCK_DATA
+ 1392              		.section	.rodata.Z_BLOCK_DATA,"a"
+ 1393              		.align	2
+ 1396              	Z_BLOCK_DATA:
+ 1397 0000 23202323 		.ascii	"# ## #  "
+ 1397      20232020 
+ 1398              		.global	J_BLOCK_DATA
+ 1399              		.section	.rodata.J_BLOCK_DATA,"a"
+ 1400              		.align	2
+ 1403              	J_BLOCK_DATA:
+ 1404 0000 23232023 		.ascii	"## # #  "
+ 1404      20232020 
+ 1405              		.global	L_BLOCK_DATA
+ 1406              		.section	.rodata.L_BLOCK_DATA,"a"
+ 1407              		.align	2
+ 1410              	L_BLOCK_DATA:
+ 1411 0000 23232320 		.ascii	"### #   "
+ 1411      23202020 
+ 1412              		.global	T_BLOCK_DATA
+ 1413              		.section	.rodata.T_BLOCK_DATA,"a"
+ 1414              		.align	2
+ 1417              	T_BLOCK_DATA:
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 31
+
+
+ 1418 0000 23202323 		.ascii	"# ###   "
+ 1418      23202020 
+ 1419              		.global	O_BLOCK_DATA
+ 1420              		.section	.rodata.O_BLOCK_DATA,"a"
+ 1421              		.align	2
+ 1424              	O_BLOCK_DATA:
+ 1425 0000 23232323 		.ascii	"####    "
+ 1425      20202020 
+ 1426              		.global	I_BLOCK_DATA
+ 1427              		.section	.rodata.I_BLOCK_DATA,"a"
+ 1428              		.align	2
+ 1431              	I_BLOCK_DATA:
+ 1432 0000 23232323 		.ascii	"####"
+ 1433              		.text
+ 1434              	.Letext0:
+ 1435              		.file 2 "c:\\users\\daniel\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xp
+ 1436              		.file 3 "c:\\users\\daniel\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xp
+ 1437              		.file 4 "Core/Inc/defines.h"
+ 1438              		.file 5 "c:\\users\\daniel\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xp
+ 1439              		.file 6 "c:\\users\\daniel\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xp
+ 1440              		.file 7 "<built-in>"
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 32
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 game_control.c
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:19     .text.checkFinished:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:25     .text.checkFinished:00000000 checkFinished
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:106    .text.checkMoveDown:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:112    .text.checkMoveDown:00000000 checkMoveDown
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:230    .text.getRandomShape:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:236    .text.getRandomShape:00000000 getRandomShape
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:263    .rodata.getRandomShape:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:366    .text.getRandomShape:00000070 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1382   .bss.shape_data.1:00000000 shape_data.1
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1431   .rodata.I_BLOCK_DATA:00000000 I_BLOCK_DATA
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1424   .rodata.O_BLOCK_DATA:00000000 O_BLOCK_DATA
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1417   .rodata.T_BLOCK_DATA:00000000 T_BLOCK_DATA
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1410   .rodata.L_BLOCK_DATA:00000000 L_BLOCK_DATA
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1403   .rodata.J_BLOCK_DATA:00000000 J_BLOCK_DATA
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1389   .rodata.S_BLOCK_DATA:00000000 S_BLOCK_DATA
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1396   .rodata.Z_BLOCK_DATA:00000000 Z_BLOCK_DATA
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:379    .text.getShapeCoord:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:385    .text.getShapeCoord:00000000 getShapeCoord
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:492    .text.eraseShape:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:498    .text.eraseShape:00000000 eraseShape
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:578    .text.writeShape:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:584    .text.writeShape:00000000 writeShape
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:653    .text.killShape:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:659    .text.killShape:00000000 killShape
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:739    .text.addShape:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:745    .text.addShape:00000000 addShape
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:887    .rodata.printGame.str1.4:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:894    .text.printGame:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:900    .text.printGame:00000000 printGame
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1063   .text.printGame:00000078 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1069   .text.printField:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1075   .text.printField:00000000 printField
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1100   .text.printFullField:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1106   .text.printFullField:00000000 printFullField
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1131   .text.removeRow:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1137   .text.removeRow:00000000 removeRow
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1214   .text.score:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1220   .text.score:00000000 score
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1247   .text.score:00000010 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1376   .bss.score.0:00000000 score.0
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1252   .text.checkFullRow:00000000 $t
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1258   .text.checkFullRow:00000000 checkFullRow
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1373   .bss.score.0:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1379   .bss.shape_data.1:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1386   .rodata.S_BLOCK_DATA:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1393   .rodata.Z_BLOCK_DATA:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1400   .rodata.J_BLOCK_DATA:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1407   .rodata.L_BLOCK_DATA:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1414   .rodata.T_BLOCK_DATA:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1421   .rodata.O_BLOCK_DATA:00000000 $d
+C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s:1428   .rodata.I_BLOCK_DATA:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_idivmod
+rand
+ARM GAS  C:\Users\Daniel\AppData\Local\Temp\ccwjDhlp.s 			page 33
+
+
+printf
+putchar
